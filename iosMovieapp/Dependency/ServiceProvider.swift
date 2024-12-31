@@ -10,4 +10,8 @@ class ServiceProvider {
     func provideNowPlayingMoviesService() -> NowPlayingMoviesService {
         return NowPlayingMoviesServiceImpl()
     }
+    
+    func provideMovieDetailService() -> MovieDetailService {
+        return MovieDetailServiceImpl()
+    }
 }

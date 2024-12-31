@@ -11,6 +11,7 @@ extension NowPlayingMoviesEntity {
     @NSManaged public var adult: Bool
     @NSManaged public var backdropPath: String?
     @NSManaged public var id: Int32
+    @NSManaged public var index: Int32
     @NSManaged public var originalLanguage: String?
     @NSManaged public var originalTitle: String?
     @NSManaged public var overview: String?

@@ -3,8 +3,9 @@ import CoreData
 
 struct NowPlayingMovies: Codable, Equatable {    
     let adult: Bool
-    let backdropPath: String
+    let backdropPath: String?
     let id: Int
+    let index: Int
     let originalLanguage: String
     let originalTitle: String
     let overview: String
@@ -35,8 +36,9 @@ extension NowPlayingMovies {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         adult = try values.decode(Bool.self, forKey: .adult)
-        backdropPath = try values.decode(String.self, forKey: .backdropPath)
+        backdropPath = try values.decodeIfPresent(String.self, forKey: .backdropPath)
         id = try values.decode(Int.self, forKey: .id)
+        index = 0
         originalLanguage = try values.decode(String.self, forKey: .originalLanguage)
         originalTitle = try values.decode(String.self, forKey: .originalTitle)
         overview = try values.decode(String.self, forKey: .overview)
@@ -49,12 +51,13 @@ extension NowPlayingMovies {
     }
     
     @discardableResult
-    func store(in context: NSManagedObjectContext, id: Int16) -> NowPlayingMoviesEntity? {
+    func store(in context: NSManagedObjectContext, index: Int16) -> NowPlayingMoviesEntity? {
         guard let nowPlayingMoviesEntity = NowPlayingMoviesEntity.insertNew(in: context)
         else { return nil }
         nowPlayingMoviesEntity.adult = adult
         nowPlayingMoviesEntity.backdropPath = backdropPath
         nowPlayingMoviesEntity.id = Int32(id)
+        nowPlayingMoviesEntity.index = Int32(index)
         nowPlayingMoviesEntity.originalLanguage = originalLanguage
         nowPlayingMoviesEntity.originalTitle = originalTitle
         nowPlayingMoviesEntity.overview = overview
@@ -75,6 +78,7 @@ extension NowPlayingMoviesEntity: ManagedEntity {
             adult: self.adult,
             backdropPath: self.backdropPath ?? "",
             id: Int(self.id),
+            index: Int(self.index),
             originalLanguage: self.originalLanguage ?? "",
             originalTitle: self.originalTitle ?? "",
             overview: self.overview ?? "",

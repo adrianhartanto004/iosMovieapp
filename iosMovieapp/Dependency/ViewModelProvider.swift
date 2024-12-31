@@ -18,4 +18,37 @@ class ViewModelProvider {
             getNowPlayingMovies
         )
     }
+    
+    func provideMovieDetailViewModel() -> MovieDetailViewModel {
+        let fetchMovieDetailUsecase = 
+            UsecaseProvider.getInstance().provideFetchMovieDetail()
+        let getMovieDetailUsecase =
+            UsecaseProvider.getInstance().provideGetMovieDetail()
+        let fetchMovieCreditsUsecase = 
+            UsecaseProvider.getInstance().provideFetchMovieCreditsUsecase()
+        let getMovieCastsUsecase =
+            UsecaseProvider.getInstance().provideGetMovieCastsUsecase()
+        let fetchMoviePhotosUsecase = 
+            UsecaseProvider.getInstance().provideFetchMoviePhotosUsecase()
+        let getMoviePhotosUsecase = 
+            UsecaseProvider.getInstance().provideGetMoviePhotosUsecase()
+        let fetchRecommendedMoviesUsecase = 
+            UsecaseProvider.getInstance().provideFetchRecommendedMoviesUsecase()
+        let fetchAuthorReviewsUsecase = 
+            UsecaseProvider.getInstance().provideFetchAuthorReviewsUsecase()
+        let getAuthorReviewsUsecase = 
+            UsecaseProvider.getInstance().provideGetAuthorReviewsUsecase()
+        
+        return MovieDetailViewModel(
+            fetchMovieDetailUsecase,
+            getMovieDetailUsecase,
+            fetchMovieCreditsUsecase,
+            getMovieCastsUsecase,
+            fetchMoviePhotosUsecase,
+            getMoviePhotosUsecase,
+            fetchRecommendedMoviesUsecase,
+            fetchAuthorReviewsUsecase,
+            getAuthorReviewsUsecase
+        )
+    }
 }

@@ -23,8 +23,11 @@ struct NowPlayingMoviesListView: View {
                     ForEach(viewModel.nowPlayingMovies, id: \.id) { movie in
                         HStack(alignment: .top) {
                             VStack(alignment: .leading, spacing: 0) {
-                                WebImage(url: URL.initURL("\(Constants.EndpointUrls.BaseImage)\(movie.posterPath)"))
+                                WebImage(url: URL.initURL("\(Constants.EndpointUrls.baseImage)\(movie.posterPath)"))
                                     .resizable()
+                                    .placeholder { 
+                                        Rectangle().foregroundColor(.gray)
+                                    }
                                     .scaledToFill()
                                     .frame(width: UIScreen.main.bounds.size.width / 2.3, height: UIScreen.main.bounds.size.height / 3) 
                                     .cornerRadius(16)
@@ -54,8 +57,8 @@ struct NowPlayingMoviesListView: View {
         .padding(.top, 60)
         .padding(.horizontal, 16)
         .onAppear {
-            viewModel.loadNewEpisodesMedia()
-            viewModel.fetchNewEpisodes()
+            viewModel.loadNowPlayingMovies()
+            viewModel.fetchNowPlayingMovies()
         }
         //        .background(Color.homeBackground)
         .edgesIgnoringSafeArea([.all])

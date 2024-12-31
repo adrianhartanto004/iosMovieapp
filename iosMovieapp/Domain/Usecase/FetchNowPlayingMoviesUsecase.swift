@@ -6,13 +6,13 @@ protocol FetchNowPlayingMoviesUsecase {
 }
 
 class FetchNowPlayingMoviesUsecaseImpl: FetchNowPlayingMoviesUsecase {
-    let moviesRepository: MoviesRepository
+    let movieRepository: MovieRepository
     
-    init(moviesRepository: MoviesRepository) {
-        self.moviesRepository = moviesRepository
+    init(movieRepository: MovieRepository) {
+        self.movieRepository = movieRepository
     }
     
     func execute() -> AnyPublisher<Void, Error> {
-        return moviesRepository.fetchNowPlayingMovies()
+        return movieRepository.fetchNowPlayingMovies()
     }
 }

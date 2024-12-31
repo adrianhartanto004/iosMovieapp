@@ -24,7 +24,7 @@ class NowPlayingMoviesDaoImpl: NowPlayingMoviesDao {
             context.perform {
                 do {
                     items.enumerated().forEach { (index, item) in
-                        item.store(in: context, id: Int16(index))
+                        item.store(in: context, index: Int16(index))
                     }
                     if context.hasChanges == true {
                         try context.save()
@@ -43,16 +43,16 @@ class NowPlayingMoviesDaoImpl: NowPlayingMoviesDao {
         return Future { [weak self] promise in
             let request: NSFetchRequest<NowPlayingMoviesEntity> = NowPlayingMoviesEntity.fetchRequest()
             request.fetchBatchSize = 10
-            let sortDescriptor = NSSortDescriptor(key: "id", ascending: true)
+            let sortDescriptor = NSSortDescriptor(key: "index", ascending: true)
             request.sortDescriptors = [sortDescriptor]
             guard let context = self?.persistentStore.backgroundContext else { return }
             context.perform {
                 do {
                     let managedObjects = try context.fetch(request)
-                    let newEpisodes = managedObjects.map { newEpisodesEntity in
-                        newEpisodesEntity.toNowPlayingMovies()
+                    let nowPlayingMoviesEntity = managedObjects.map { nowPlayingMovieEntity in
+                        nowPlayingMovieEntity.toNowPlayingMovies()
                     }
-                    promise(.success(newEpisodes))
+                    promise(.success(nowPlayingMoviesEntity))
                 } catch {
                     promise(.failure(error))
                 }

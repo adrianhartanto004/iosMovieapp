@@ -7,13 +7,23 @@ class RepositoryProvider {
         return instance
     }
     
-    func provideMoviesRepository() -> MoviesRepository {
+    func provideMovieRepository() -> MovieRepository {
         let nowPlayingMoviesService = ServiceProvider.getInstance().provideNowPlayingMoviesService()
         let nowPlayingMoviesDao = DatabaseProvider.getInstance().provideNowPlayingMoviesDao()
+        let movieDetailService = ServiceProvider.getInstance().provideMovieDetailService()
+        let movieDetailDao = DatabaseProvider.getInstance().provideMovieDetailDao()
+        let movieCastsDao = DatabaseProvider.getInstance().provideMovieCastsDao()
+        let moviePhotosDao = DatabaseProvider.getInstance().provideMoviePhotosDao()
+        let movieAuthorReviewsDao = DatabaseProvider.getInstance().provideMovieAuthorReviewsDao()
         
-        return MoviesRepositoryImpl(
+        return MovieRepositoryImpl(
             nowPlayingMoviesService: nowPlayingMoviesService,
-            nowPlayingMoviesDao: nowPlayingMoviesDao
+            nowPlayingMoviesDao: nowPlayingMoviesDao,
+            movieDetailService: movieDetailService,
+            movieDetailDao: movieDetailDao,
+            movieCastsDao: movieCastsDao,
+            moviePhotosDao: moviePhotosDao,
+            movieAuthorReviewsDao: movieAuthorReviewsDao
         )
     }
 }

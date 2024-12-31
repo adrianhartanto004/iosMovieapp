@@ -1,9 +1,76 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23B74" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="24C101" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="MovieAuthorReviewListEntity" representedClassName="MovieAuthorReviewListEntity" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="authorReviews" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieAuthorReviewsEntity" inverseName="authorReviewsRelation" inverseEntity="MovieAuthorReviewsEntity"/>
+    </entity>
+    <entity name="MovieAuthorReviewsEntity" representedClassName="MovieAuthorReviewsEntity" syncable="YES">
+        <attribute name="author" optional="YES" attributeType="String"/>
+        <attribute name="avatarPath" optional="YES" attributeType="String"/>
+        <attribute name="content" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="rating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="updatedAt" optional="YES" attributeType="String"/>
+        <relationship name="authorReviewsRelation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieAuthorReviewListEntity" inverseName="authorReviews" inverseEntity="MovieAuthorReviewListEntity"/>
+    </entity>
+    <entity name="MovieCastsEntity" representedClassName="MovieCastsEntity" syncable="YES">
+        <attribute name="castId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="profilePath" optional="YES" attributeType="String"/>
+        <relationship name="castsRelation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieCreditListEntity" inverseName="casts" inverseEntity="MovieCreditListEntity"/>
+    </entity>
+    <entity name="MovieCreditListEntity" representedClassName="MovieCreditListEntity" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="casts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieCastsEntity" inverseName="castsRelation" inverseEntity="MovieCastsEntity"/>
+    </entity>
+    <entity name="MovieDetailEntity" representedClassName="MovieDetailEntity" syncable="YES">
+        <attribute name="budget" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="originalLanguage" optional="YES" attributeType="String"/>
+        <attribute name="overview" optional="YES" attributeType="String"/>
+        <attribute name="posterPath" optional="YES" attributeType="String"/>
+        <attribute name="releaseDate" optional="YES" attributeType="String"/>
+        <attribute name="revenue" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="voteAverage" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="voteCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="genres" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieDetailGenresEntity" inverseName="genresRelation" inverseEntity="MovieDetailGenresEntity"/>
+        <relationship name="productionCompanies" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieDetailProductionCompaniesEntity" inverseName="productionCompaniesRelation" inverseEntity="MovieDetailProductionCompaniesEntity"/>
+        <relationship name="productionCountries" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieDetailProductionCountriesEntity" inverseName="productionCountriesRelation" inverseEntity="MovieDetailProductionCountriesEntity"/>
+    </entity>
+    <entity name="MovieDetailGenresEntity" representedClassName="MovieDetailGenresEntity" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="genresRelation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieDetailEntity" inverseName="genres" inverseEntity="MovieDetailEntity"/>
+    </entity>
+    <entity name="MovieDetailProductionCompaniesEntity" representedClassName="MovieDetailProductionCompaniesEntity" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="originCountry" optional="YES" attributeType="String"/>
+        <relationship name="productionCompaniesRelation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieDetailEntity" inverseName="productionCompanies" inverseEntity="MovieDetailEntity"/>
+    </entity>
+    <entity name="MovieDetailProductionCountriesEntity" representedClassName="MovieDetailProductionCountriesEntity" syncable="YES">
+        <attribute name="isoDate" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="productionCountriesRelation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieDetailEntity" inverseName="productionCountries" inverseEntity="MovieDetailEntity"/>
+    </entity>
+    <entity name="MovieDetailRecommendedMoviesEntity" representedClassName="MovieDetailRecommendedMoviesEntity" syncable="YES"/>
+    <entity name="MoviePhotoListEntity" representedClassName="MoviePhotoListEntity" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MoviePhotosEntity" inverseName="photosRelation" inverseEntity="MoviePhotosEntity"/>
+    </entity>
+    <entity name="MoviePhotosEntity" representedClassName="MoviePhotosEntity" syncable="YES">
+        <attribute name="filePath" optional="YES" attributeType="String"/>
+        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="photosRelation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MoviePhotoListEntity" inverseName="photos" inverseEntity="MoviePhotoListEntity"/>
+    </entity>
     <entity name="NowPlayingMoviesEntity" representedClassName=".NowPlayingMoviesEntity" syncable="YES">
         <attribute name="adult" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="backdropPath" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="originalLanguage" optional="YES" attributeType="String"/>
         <attribute name="originalTitle" optional="YES" attributeType="String"/>
         <attribute name="overview" optional="YES" attributeType="String"/>

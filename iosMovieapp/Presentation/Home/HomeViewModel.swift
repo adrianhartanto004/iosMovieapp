@@ -8,14 +8,14 @@ class HomeViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    private let fetchNewEpisodesUsecase: FetchNowPlayingMoviesUsecase
+    private let fetchNowPlayingMoviesUsecase: FetchNowPlayingMoviesUsecase
     private let getNowPlayingMoviesUsecase: GetNowPlayingMoviesUsecase
     
     init(
-        _ fetchNewEpisodesUsecase: FetchNowPlayingMoviesUsecase,
+        _ fetchNowPlayingMoviesUsecase: FetchNowPlayingMoviesUsecase,
         _ getNowPlayingMoviesUsecase: GetNowPlayingMoviesUsecase
     ) {
-        self.fetchNewEpisodesUsecase = fetchNewEpisodesUsecase
+        self.fetchNowPlayingMoviesUsecase = fetchNowPlayingMoviesUsecase
         self.getNowPlayingMoviesUsecase = getNowPlayingMoviesUsecase
     }
     
@@ -23,9 +23,10 @@ class HomeViewModel: ObservableObject {
         cancellables.removeAll()
     }
     
-    func fetchNewEpisodes() {
+    func fetchNowPlayingMovies() {
         moviesError = nil
-        fetchNewEpisodesUsecase.execute()
+        isNowPlayingMoviesLoading = true
+        fetchNowPlayingMoviesUsecase.execute()
             .flatMap { [weak self] _ -> AnyPublisher<[NowPlayingMovies], Error> in
                 guard let self = self else {
                     return Fail.init(
@@ -51,7 +52,7 @@ class HomeViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func loadNewEpisodesMedia() {
+    func loadNowPlayingMovies() {
         moviesError = nil
         isNowPlayingMoviesLoading = true
         getNowPlayingMoviesUsecase.execute()
@@ -59,7 +60,7 @@ class HomeViewModel: ObservableObject {
             .sink { [weak self] completion in
                 switch completion {
                 case .finished:
-                    break
+                    self?.isNowPlayingMoviesLoading = false
                 case .failure(let error):
                     self?.moviesError = error
                     self?.isNowPlayingMoviesLoading = false
