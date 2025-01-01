@@ -19,11 +19,25 @@ struct MovieDetailView: View {
                 }
                 Text("Movie Detail")
                     .padding(.leading, 16)
+                Spacer()
+                Button {
+                    if let movieDetail = viewModel.movieDetail {
+                        viewModel.addOrRemoveFavouriteMovie(movieDetail: movieDetail)
+                    }
+                } label: {
+                    if viewModel.isFavouriteMovie {
+                        Image(systemName: "heart.fill")
+                            .foregroundColor(.red)
+                    } else {
+                        Image(systemName: "heart")
+                            .foregroundColor(.red)
+                    }
+                }
             }
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 0) {
                     HStack {
-                        WebImage(url: URL.initURL("\(Constants.EndpointUrls.baseImage)\(viewModel.movieDetail?.pospterPath ?? "")"))
+                        WebImage(url: URL.initURL("\(Constants.EndpointUrls.baseImage)\(viewModel.movieDetail?.posterPath ?? "")"))
                             .resizable()
                             .placeholder { 
                                 Rectangle().foregroundColor(.gray)

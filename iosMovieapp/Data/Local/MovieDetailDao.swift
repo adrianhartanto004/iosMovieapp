@@ -28,7 +28,7 @@ class MovieDetailDaoImpl: MovieDetailDao {
                     movieDetailEntity.id = Int32(item.id)
                     movieDetailEntity.originalLanguage = item.originalLanguage ?? ""
                     movieDetailEntity.overview = item.overview ?? ""
-                    movieDetailEntity.posterPath = item.pospterPath ?? ""
+                    movieDetailEntity.posterPath = item.posterPath ?? ""
                     movieDetailEntity.releaseDate = item.releaseDate ?? ""
                     movieDetailEntity.revenue = Int32(item.revenue ?? 0)
                     movieDetailEntity.title = item.title ?? ""
@@ -115,7 +115,7 @@ class MovieDetailDaoImpl: MovieDetailDao {
                         id: Int(movieDetailEntity.id), 
                         originalLanguage: movieDetailEntity.originalLanguage, 
                         overview: movieDetailEntity.overview, 
-                        pospterPath: movieDetailEntity.posterPath, 
+                        posterPath: movieDetailEntity.posterPath, 
                         productionCompanies: productionCompanies, 
                         productionCountries: productionCountries, 
                         releaseDate: movieDetailEntity.releaseDate, 

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="24C101" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="FavouriteMoviesEntity" representedClassName="FavouriteMoviesEntity" syncable="YES">
+        <attribute name="addedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="posterPath" optional="YES" attributeType="String"/>
+        <attribute name="releaseDate" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="voteAverage" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="voteCount" optional="YES" attributeType="Integer 32" defaultValueString="0.0" usesScalarValueType="YES"/>
+    </entity>
     <entity name="MovieAuthorReviewListEntity" representedClassName="MovieAuthorReviewListEntity" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="authorReviews" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieAuthorReviewsEntity" inverseName="authorReviewsRelation" inverseEntity="MovieAuthorReviewsEntity"/>
@@ -67,14 +76,8 @@
         <relationship name="photosRelation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MoviePhotoListEntity" inverseName="photos" inverseEntity="MoviePhotoListEntity"/>
     </entity>
     <entity name="NowPlayingMoviesEntity" representedClassName=".NowPlayingMoviesEntity" syncable="YES">
-        <attribute name="adult" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="backdropPath" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="originalLanguage" optional="YES" attributeType="String"/>
-        <attribute name="originalTitle" optional="YES" attributeType="String"/>
-        <attribute name="overview" optional="YES" attributeType="String"/>
-        <attribute name="popularity" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="posterPath" optional="YES" attributeType="String"/>
         <attribute name="releaseDate" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>

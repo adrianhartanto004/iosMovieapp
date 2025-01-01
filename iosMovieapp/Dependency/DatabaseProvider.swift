@@ -28,4 +28,8 @@ class DatabaseProvider {
     func provideMovieAuthorReviewsDao() -> MovieAuthorReviewsDao {
         return MovieAuthorReviewsDaoImpl(persistentStore: coreDataStack)
     }
+    
+    func provideFavouriteMoviesDao() -> FavouriteMoviesDao {
+        return FavouriteMoviesDaoImpl(persistentStore: coreDataStack)
+    }
 }

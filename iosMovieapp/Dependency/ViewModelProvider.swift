@@ -38,6 +38,10 @@ class ViewModelProvider {
             UsecaseProvider.getInstance().provideFetchAuthorReviewsUsecase()
         let getAuthorReviewsUsecase = 
             UsecaseProvider.getInstance().provideGetAuthorReviewsUsecase()
+        let addOrRemoveFavouriteMoviesUsecase = 
+            UsecaseProvider.getInstance().provideAddOrRemoveFavouriteMoviesUsecase()
+        let getIsFavouriteMovieUsecase = 
+            UsecaseProvider.getInstance().provideGetIsFavouriteMovieUsecase()
         
         return MovieDetailViewModel(
             fetchMovieDetailUsecase,
@@ -48,7 +52,18 @@ class ViewModelProvider {
             getMoviePhotosUsecase,
             fetchRecommendedMoviesUsecase,
             fetchAuthorReviewsUsecase,
-            getAuthorReviewsUsecase
+            getAuthorReviewsUsecase,
+            addOrRemoveFavouriteMoviesUsecase,
+            getIsFavouriteMovieUsecase
+        )
+    }
+    
+    func provideFavouriteMoviesViewModel() -> FavouriteMoviesViewModel {
+        let getFavouriteMoviesUsecase = 
+            UsecaseProvider.getInstance().provideGetFavouriteMoviesUsecase()
+        
+        return FavouriteMoviesViewModel(
+            getFavouriteMoviesUsecase
         )
     }
 }

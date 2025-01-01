@@ -26,4 +26,9 @@ class RepositoryProvider {
             movieAuthorReviewsDao: movieAuthorReviewsDao
         )
     }
+    
+    func provideFavouriteMoviesRepository() -> FavouriteMovieRepository {
+        let favouriteMoviesDao = DatabaseProvider.getInstance().provideFavouriteMoviesDao()
+        return FavouriteMovieRepositoryImpl(favouriteMoviesDao: favouriteMoviesDao)
+    }
 }

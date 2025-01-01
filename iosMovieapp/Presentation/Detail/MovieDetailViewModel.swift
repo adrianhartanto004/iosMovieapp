@@ -11,6 +11,7 @@ class MovieDetailViewModel: ObservableObject {
     @Published var moviePhotos: [Photo] = []
     @Published var recommendedMovies: [RecommendedMovies] = []
     @Published var authorReviews: [AuthorReview] = []
+    @Published var isFavouriteMovie = false
     @Published var movieDetailError: Error?
     @Published var movieCastsError: Error?
     @Published var moviePhotosError: Error?
@@ -27,6 +28,8 @@ class MovieDetailViewModel: ObservableObject {
     private let fetchRecommendedMoviesUsecase: FetchRecommendedMoviesUsecase
     private let fetchAuthorReviewsUsecase: FetchAuthorReviewsUsecase
     private let getAuthorReviewsUsecase: GetAuthorReviewsUsecase
+    private let addOrRemoveFavouriteMovieUsecase: AddOrRemoveFavouriteMovieUsecase
+    private let getIsFavouriteMovieUsecase: GetIsFavouriteMovieUsecase
     
     init(
         _ fetchMovieDetailUsecase: FetchMovieDetailUsecase,
@@ -37,7 +40,9 @@ class MovieDetailViewModel: ObservableObject {
         _ getMoviePhotosUsecase: GetMoviePhotosUsecase,
         _ fetchRecommendedMoviesUsecase: FetchRecommendedMoviesUsecase,
         _ fetchAuthorReviewsUsecase: FetchAuthorReviewsUsecase,
-        _ getAuthorReviewsUsecase: GetAuthorReviewsUsecase
+        _ getAuthorReviewsUsecase: GetAuthorReviewsUsecase,
+        _ addOrRemoveFavouriteMovieUsecase: AddOrRemoveFavouriteMovieUsecase,
+        _ getIsFavouriteMovieUsecase: GetIsFavouriteMovieUsecase
     ) {
         self.fetchMovieDetailUsecase = fetchMovieDetailUsecase
         self.getMovieDetailUsecase = getMovieDetailUsecase
@@ -48,6 +53,8 @@ class MovieDetailViewModel: ObservableObject {
         self.fetchRecommendedMoviesUsecase = fetchRecommendedMoviesUsecase
         self.fetchAuthorReviewsUsecase = fetchAuthorReviewsUsecase
         self.getAuthorReviewsUsecase = getAuthorReviewsUsecase
+        self.addOrRemoveFavouriteMovieUsecase = addOrRemoveFavouriteMovieUsecase
+        self.getIsFavouriteMovieUsecase = getIsFavouriteMovieUsecase
     }
     
     deinit {
@@ -58,6 +65,7 @@ class MovieDetailViewModel: ObservableObject {
         movieDetailError = nil
         isMovieDetailLoading = true
         fetchMovieDetailUsecase.execute(movieId: movieId)
+            .receive(on: DispatchQueue.main)
             .flatMap { [weak self] _ -> AnyPublisher<MovieDetail, Error> in
                 guard let self = self else {
                     return Fail.init(
@@ -69,6 +77,15 @@ class MovieDetailViewModel: ObservableObject {
                 return self.getMovieDetailUsecase.execute(movieId: movieId)
             }
             .receive(on: DispatchQueue.main)
+            .flatMap { [weak self] movieDetail -> AnyPublisher<Bool, Error> in
+                self?.movieDetail = movieDetail
+                guard let self = self else {
+                    return Fail(error: NSError(domain: "MovieDetailViewModel", code: 0, userInfo: ["message": "nil self"]))
+                        .eraseToAnyPublisher()
+                }
+                return self.getIsFavouriteMovieUsecase.execute(movieId: movieId)
+            }
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 switch completion {
                 case .finished:
@@ -77,8 +94,8 @@ class MovieDetailViewModel: ObservableObject {
                     self?.movieDetailError = error
                     self?.isMovieDetailLoading = false
                 }
-            } receiveValue: { [weak self] movie in
-                self?.movieDetail = movie
+            } receiveValue: { [weak self] isFavouriteMovie in
+                self?.isFavouriteMovie = isFavouriteMovie
             }
             .store(in: &cancellables)
     }
@@ -88,18 +105,27 @@ class MovieDetailViewModel: ObservableObject {
         isMovieDetailLoading = true
         getMovieDetailUsecase.execute(movieId: movieId)
             .receive(on: DispatchQueue.main)
+            .flatMap { [weak self] movieDetail -> AnyPublisher<Bool, Error> in
+                self?.movieDetail = movieDetail
+                guard let self = self else {
+                    return Fail(error: NSError(domain: "MovieDetailViewModel", code: 0, userInfo: ["message": "nil self"]))
+                        .eraseToAnyPublisher()
+                }
+                return self.getIsFavouriteMovieUsecase.execute(movieId: movieId)
+            }
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 switch completion {
                 case .finished:
-                    break
+                    self?.isMovieDetailLoading = false
                 case .failure(let error):
                     self?.movieDetailError = error
                     self?.isMovieDetailLoading = false
                 }
-            } receiveValue: { [weak self] movie in
-                self?.movieDetail = movie
+            } receiveValue: { [weak self] isFavouriteMovie in
+                self?.isFavouriteMovie = isFavouriteMovie
             }
-            .store(in: &self.cancellables)
+            .store(in: &cancellables)
     }
     
     func fetchMovieCasts(movieId: Int) {
@@ -242,6 +268,33 @@ class MovieDetailViewModel: ObservableObject {
                 }
             } receiveValue: { [weak self] authorReviews in
                 self?.authorReviews = authorReviews
+            }
+            .store(in: &cancellables)
+    }
+    
+    func addOrRemoveFavouriteMovie(movieDetail: MovieDetail) {
+        addOrRemoveFavouriteMovieUsecase.execute(movieDetail: movieDetail)
+            .receive(on: DispatchQueue.main)
+            .flatMap { [weak self] _ -> AnyPublisher<Bool, Error> in
+                guard let self = self else {
+                    return Fail.init(
+                        error: NSError(
+                            domain: "MovieDetailViewModel", code: 0, userInfo: ["message": "nil self"])
+                    )
+                    .eraseToAnyPublisher()
+                }
+                return self.getIsFavouriteMovieUsecase.execute(movieId: movieDetail.id)
+            }
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(_):
+                    break
+                }
+            } receiveValue: { [weak self] isFavouriteMovie in
+                self?.isFavouriteMovie = isFavouriteMovie
             }
             .store(in: &cancellables)
     }

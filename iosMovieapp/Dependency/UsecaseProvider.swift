@@ -61,4 +61,19 @@ class UsecaseProvider {
         let movieRepository = RepositoryProvider.getInstance().provideMovieRepository()
         return GetAuthorReviewsUsecaseImpl(movieRepository: movieRepository)
     }
+    
+    func provideAddOrRemoveFavouriteMoviesUsecase() -> AddOrRemoveFavouriteMovieUsecase {
+        let favouriteMovieRepository = RepositoryProvider.getInstance().provideFavouriteMoviesRepository()
+        return AddOrRemoveFavouriteMovieUsecaseImpl(favouriteMovieRepository: favouriteMovieRepository)
+    }
+    
+    func provideGetIsFavouriteMovieUsecase() -> GetIsFavouriteMovieUsecase {
+        let favouriteMovieRepository = RepositoryProvider.getInstance().provideFavouriteMoviesRepository()
+        return GetIsFavouriteMovieUsecaseImpl(favouriteMovieRepository: favouriteMovieRepository)
+    }
+    
+    func provideGetFavouriteMoviesUsecase() -> GetFavouriteMoviesUsecase {
+        let favouriteMovieRepository = RepositoryProvider.getInstance().provideFavouriteMoviesRepository()
+        return GetFavouriteMoviesUsecaseImpl(favouriteMovieRepository: favouriteMovieRepository)
+    }
 }

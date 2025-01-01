@@ -6,7 +6,7 @@ struct MovieDetail: Codable, Equatable {
     let id: Int
     let originalLanguage: String?
     let overview: String?
-    let pospterPath: String?
+    let posterPath: String?
     let productionCompanies: [ProductionCompany]?
     let productionCountries: [ProductionCountry]?
     let releaseDate: String?
@@ -21,7 +21,7 @@ struct MovieDetail: Codable, Equatable {
         case id
         case originalLanguage = "original_language"
         case overview
-        case pospterPath = "poster_path"
+        case posterPath = "poster_path"
         case productionCompanies = "production_companies"
         case productionCountries = "production_countries"
         case releaseDate = "release_date"
@@ -40,7 +40,7 @@ extension MovieDetail {
         id = try values.decode(Int.self, forKey: .id)
         originalLanguage = try values.decodeIfPresent(String.self, forKey: .originalLanguage) ?? ""
         overview = try values.decodeIfPresent(String.self, forKey: .overview) ?? ""
-        pospterPath = try values.decodeIfPresent(String.self, forKey: .pospterPath) ?? ""
+        posterPath = try values.decodeIfPresent(String.self, forKey: .posterPath) ?? ""
         productionCompanies = try values.decodeIfPresent([ProductionCompany].self, forKey: .productionCompanies) ?? []
         productionCountries = try values.decodeIfPresent([ProductionCountry].self, forKey: .productionCountries) ?? []
         releaseDate = try values.decodeIfPresent(String.self, forKey: .releaseDate) ?? ""
