@@ -21,6 +21,7 @@ struct FavouriteMoviesView: View {
                                         .resizable()
                                         .placeholder { 
                                             Rectangle().foregroundColor(.gray)
+                                                .shimmering()
                                         }
                                         .scaledToFill()
                                         .frame(width: UIScreen.main.bounds.size.width / 2.3, height: UIScreen.main.bounds.size.height / 3) 
