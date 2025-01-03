@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		232074232CC97714008D6540 /* NowPlayingMoviesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232074222CC97714008D6540 /* NowPlayingMoviesListView.swift */; };
 		232074252CC97857008D6540 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232074242CC97857008D6540 /* ContentView.swift */; };
+		2345A3772D28858200BE6821 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 2345A3762D28858200BE6821 /* SwiftUIIntrospect */; };
 		234664AD2CBFEAAA00861E4A /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234664AC2CBFEAAA00861E4A /* HomeViewModel.swift */; };
 		234664BF2CBFEC5100861E4A /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234664AE2CBFEC5100861E4A /* APIError.swift */; };
 		234664C02CBFEC5100861E4A /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234664AF2CBFEC5100861E4A /* Configuration.swift */; };
@@ -273,6 +274,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				23F165F42CBFE6D5002140DB /* SDWebImageSwiftUI in Frameworks */,
+				2345A3772D28858200BE6821 /* SwiftUIIntrospect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -725,6 +727,7 @@
 			name = iosMovieapp;
 			packageProductDependencies = (
 				23F165F32CBFE6D5002140DB /* SDWebImageSwiftUI */,
+				2345A3762D28858200BE6821 /* SwiftUIIntrospect */,
 			);
 			productName = iosMovieapp;
 			productReference = 23F165C02CBFB04E002140DB /* iosMovieapp.app */;
@@ -800,6 +803,7 @@
 			mainGroup = 23F165B72CBFB04E002140DB;
 			packageReferences = (
 				23F165F22CBFE6D5002140DB /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				2345A3752D28858200BE6821 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 23F165C12CBFB04E002140DB /* Products */;
 			projectDirPath = "";
@@ -1282,6 +1286,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2345A3752D28858200BE6821 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
 		23F165F22CBFE6D5002140DB /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
@@ -1293,6 +1305,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2345A3762D28858200BE6821 /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2345A3752D28858200BE6821 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = SwiftUIIntrospect;
+		};
 		23F165F32CBFE6D5002140DB /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 23F165F22CBFE6D5002140DB /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;

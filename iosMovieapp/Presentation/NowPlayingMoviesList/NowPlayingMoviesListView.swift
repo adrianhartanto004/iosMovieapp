@@ -1,5 +1,6 @@
 import SwiftUI
 import SDWebImageSwiftUI
+import SwiftUIIntrospect
 
 struct NowPlayingMoviesListView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -18,6 +19,7 @@ struct NowPlayingMoviesListView: View {
                 Text("More Now Playing Movies")
                     .padding(.leading, 16)
             }
+            .padding(.horizontal, 16)
             List(viewModel.nowPlayingMovies, id: \.id) { movie in
                 HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 0) {
@@ -46,7 +48,6 @@ struct NowPlayingMoviesListView: View {
                         Spacer()
                     }
                 }
-                .padding(.bottom, 16)
                 .onAppear {
                     if shouldLoadMore(movieId: movie.id) {
                         if viewModel.isFirstFetchSuccessful {
@@ -57,11 +58,21 @@ struct NowPlayingMoviesListView: View {
                     }
                 }
             }
+            .introspect(.list, on: .iOS(.v13, .v14, .v15)) { tableView in
+                tableView.separatorStyle = .none
+            }
+            .introspect(.list, on: .iOS(.v16, .v17, .v18)) { collectionView in
+                if #available(iOS 14.0, *) {
+                    var config = UICollectionLayoutListConfiguration(appearance: .plain)
+                    config.showsSeparators = false
+                    let layout = UICollectionViewCompositionalLayout.list(using: config)
+                    collectionView.collectionViewLayout = layout 
+                }
+            }
             .listStyle(PlainListStyle())
             .padding(.top, 16)
         }
         .padding(.top, 60)
-        .padding(.horizontal, 16)
         .onAppear {
             viewModel.loadNowPlayingMovies()
             viewModel.fetchNowPlayingMovies()
