@@ -31,11 +31,11 @@ extension NowPlayingMovies {
     }
     
     @discardableResult
-    func store(in context: NSManagedObjectContext, index: Int16) -> NowPlayingMoviesEntity? {
+    func store(in context: NSManagedObjectContext, addedAt: Date) -> NowPlayingMoviesEntity? {
         guard let nowPlayingMoviesEntity = NowPlayingMoviesEntity.insertNew(in: context)
         else { return nil }
         nowPlayingMoviesEntity.id = Int32(id)
-        nowPlayingMoviesEntity.index = Int32(index)
+        nowPlayingMoviesEntity.addedAt = addedAt
         nowPlayingMoviesEntity.posterPath = posterPath
         nowPlayingMoviesEntity.releaseDate = releaseDate
         nowPlayingMoviesEntity.title = title

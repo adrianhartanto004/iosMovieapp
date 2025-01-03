@@ -3,6 +3,7 @@ import Combine
 
 protocol MovieRepository {
     func fetchNowPlayingMovies() -> AnyPublisher<Void, Error>
+    func loadMoreNowPlayingMovies(page: Int) -> AnyPublisher<Void, Error>
     func getNowPlayingMovies(limit: Int?) -> AnyPublisher<[NowPlayingMovies], Error>
     func fetchMovieDetail(movieId: Int) -> AnyPublisher<Void, Error>
     func getMovieDetail(movieId: Int) -> AnyPublisher<MovieDetail, Error>
@@ -44,7 +45,7 @@ class MovieRepositoryImpl: MovieRepository {
     
     func fetchNowPlayingMovies() -> AnyPublisher<Void, Error> {
         return nowPlayingMoviesService
-            .fetch()
+            .fetch(page: 1)
             .flatMap { [weak self] movies -> AnyPublisher<Void, Error> in
                 guard let self = self else {
                     return Fail.init(
@@ -55,6 +56,23 @@ class MovieRepositoryImpl: MovieRepository {
                 }
                 return self.nowPlayingMoviesDao.deleteAll()
                     .flatMap{ self.nowPlayingMoviesDao.insertAll(movies.nowPlayingMovies) }
+                    .eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    func loadMoreNowPlayingMovies(page: Int) -> AnyPublisher<Void, Error> {
+        return nowPlayingMoviesService
+            .fetch(page: page)
+            .flatMap { [weak self] movies -> AnyPublisher<Void, Error> in
+                guard let self = self else {
+                    return Fail.init(
+                        error: NSError(
+                            domain: "MovieRepository", code: 0, userInfo: ["message": "nil self"])
+                    )
+                    .eraseToAnyPublisher()
+                }
+                return self.nowPlayingMoviesDao.insertAll(movies.nowPlayingMovies)
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()

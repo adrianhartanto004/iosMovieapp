@@ -66,4 +66,19 @@ class ViewModelProvider {
             getFavouriteMoviesUsecase
         )
     }
+    
+    func provideNowPlayingMoviesListViewModel() -> NowPlayingMoviesListViewModel {
+        let fetchNowPlayingMovies = 
+            UsecaseProvider.getInstance().provideFetchNowPlayingMoviesUsecase()
+        let getNowPlayingMovies =
+            UsecaseProvider.getInstance().provideGetNowPlayingMoviesUsecase()
+        let loadMoreNowPlayingMoviesUsecase =
+            UsecaseProvider.getInstance().provideLoadMoreNowPlayingMoviesUsecase()
+        
+        return NowPlayingMoviesListViewModel(
+            fetchNowPlayingMovies,
+            getNowPlayingMovies,
+            loadMoreNowPlayingMoviesUsecase
+        )
+    }
 }

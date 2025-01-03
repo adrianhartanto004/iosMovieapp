@@ -12,6 +12,11 @@ class UsecaseProvider {
         return FetchNowPlayingMoviesUsecaseImpl(movieRepository: movieRepository)
     }
     
+    func provideLoadMoreNowPlayingMoviesUsecase() -> LoadMoreNowPlayingMoviesUsecase {
+        let movieRepository = RepositoryProvider.getInstance().provideMovieRepository()
+        return LoadMoreNowPlayingMoviesUsecaseImpl(movieRepository: movieRepository)
+    }
+    
     func provideGetNowPlayingMoviesUsecase() -> GetNowPlayingMoviesUsecase {
         let movieRepository = RepositoryProvider.getInstance().provideMovieRepository()
         return GetNowPlayingMoviesUsecaseImpl(movieRepository: movieRepository)

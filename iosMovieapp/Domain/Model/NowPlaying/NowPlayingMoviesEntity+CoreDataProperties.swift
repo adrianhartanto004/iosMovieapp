@@ -9,7 +9,7 @@ extension NowPlayingMoviesEntity {
     }
 
     @NSManaged public var id: Int32
-    @NSManaged public var index: Int32
+    @NSManaged public var addedAt: Date
     @NSManaged public var posterPath: String?
     @NSManaged public var releaseDate: String?
     @NSManaged public var title: String?

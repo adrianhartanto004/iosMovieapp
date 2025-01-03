@@ -23,8 +23,8 @@ class NowPlayingMoviesDaoImpl: NowPlayingMoviesDao {
             context.configureAsUpdateContext()
             context.perform {
                 do {
-                    items.enumerated().forEach { (index, item) in
-                        item.store(in: context, index: Int16(index))
+                    items.forEach { item in
+                        item.store(in: context, addedAt: Date())
                     }
                     if context.hasChanges == true {
                         try context.save()
@@ -46,7 +46,7 @@ class NowPlayingMoviesDaoImpl: NowPlayingMoviesDao {
             if let limit = limit {
                 request.fetchLimit = limit
             }
-            let sortDescriptor = NSSortDescriptor(key: "index", ascending: true)
+            let sortDescriptor = NSSortDescriptor(key: "addedAt", ascending: true)
             request.sortDescriptors = [sortDescriptor]
             guard let context = self?.persistentStore.backgroundContext else { return }
             context.perform {

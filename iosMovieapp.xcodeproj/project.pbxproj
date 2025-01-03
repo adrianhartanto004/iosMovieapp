@@ -113,6 +113,8 @@
 		239468DC2D248F5A00978DA7 /* FavouriteMoviesDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239468DB2D248F5600978DA7 /* FavouriteMoviesDao.swift */; };
 		239469762D24A48900978DA7 /* GetFavouriteMoviesUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239469752D24A47800978DA7 /* GetFavouriteMoviesUsecase.swift */; };
 		239469782D24A69800978DA7 /* FavouriteMoviesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239469772D24A69100978DA7 /* FavouriteMoviesViewModel.swift */; };
+		23D2BF9D2D27FB7D0060EC0A /* NowPlayingMoviesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D2BF9C2D27FB710060EC0A /* NowPlayingMoviesListViewModel.swift */; };
+		23D2BF9F2D2803220060EC0A /* LoadMoreNowPlayingMoviesUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D2BF9E2D2803180060EC0A /* LoadMoreNowPlayingMoviesUsecase.swift */; };
 		23F165C62CBFB04E002140DB /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F165C52CBFB04E002140DB /* HomeView.swift */; };
 		23F165C82CBFB051002140DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23F165C72CBFB051002140DB /* Assets.xcassets */; };
 		23F165D52CBFB052002140DB /* iosMovieappTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F165D42CBFB052002140DB /* iosMovieappTests.swift */; };
@@ -248,6 +250,8 @@
 		239468DB2D248F5600978DA7 /* FavouriteMoviesDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteMoviesDao.swift; sourceTree = "<group>"; };
 		239469752D24A47800978DA7 /* GetFavouriteMoviesUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetFavouriteMoviesUsecase.swift; sourceTree = "<group>"; };
 		239469772D24A69100978DA7 /* FavouriteMoviesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteMoviesViewModel.swift; sourceTree = "<group>"; };
+		23D2BF9C2D27FB710060EC0A /* NowPlayingMoviesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingMoviesListViewModel.swift; sourceTree = "<group>"; };
+		23D2BF9E2D2803180060EC0A /* LoadMoreNowPlayingMoviesUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreNowPlayingMoviesUsecase.swift; sourceTree = "<group>"; };
 		23F165C02CBFB04E002140DB /* iosMovieapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosMovieapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23F165C52CBFB04E002140DB /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		23F165C72CBFB051002140DB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -293,6 +297,7 @@
 			isa = PBXGroup;
 			children = (
 				232074222CC97714008D6540 /* NowPlayingMoviesListView.swift */,
+				23D2BF9C2D27FB710060EC0A /* NowPlayingMoviesListViewModel.swift */,
 			);
 			path = NowPlayingMoviesList;
 			sourceTree = "<group>";
@@ -498,6 +503,7 @@
 			isa = PBXGroup;
 			children = (
 				234664FB2CC02E7200861E4A /* FetchNowPlayingMoviesUsecase.swift */,
+				23D2BF9E2D2803180060EC0A /* LoadMoreNowPlayingMoviesUsecase.swift */,
 				234664FD2CC02E9C00861E4A /* GetNowPlayingMoviesUsecase.swift */,
 				23913FC72D1F5C810088821F /* FetchMovieDetailUsecase.swift */,
 				23913FC92D1F5C900088821F /* GetMovieDetailUsecase.swift */,
@@ -854,6 +860,7 @@
 				2391401B2D2066AB0088821F /* AuthorReviewsRequest.swift in Sources */,
 				234664E22CBFEEF600861E4A /* URL + Extension.swift in Sources */,
 				23913FC62D1F47550088821F /* MovieDetailView.swift in Sources */,
+				23D2BF9D2D27FB7D0060EC0A /* NowPlayingMoviesListViewModel.swift in Sources */,
 				23913FF22D200BED0088821F /* RecommendedMovies.swift in Sources */,
 				234664C12CBFEC5100861E4A /* NetworkTarget + Extension.swift in Sources */,
 				234664E42CBFF03600861E4A /* Constants.swift in Sources */,
@@ -913,6 +920,7 @@
 				23913FF02D200B790088821F /* MoviePhotoList.swift in Sources */,
 				23913FEC2D2004C00088821F /* MovieCreditList.swift in Sources */,
 				23913FDE2D1FF62D0088821F /* AuthorDetails.swift in Sources */,
+				23D2BF9F2D2803220060EC0A /* LoadMoreNowPlayingMoviesUsecase.swift in Sources */,
 				234664F32CC0123800861E4A /* NowPlayingMoviesEntity+CoreDataClass.swift in Sources */,
 				23913FF42D200BF80088821F /* RecommendedMoviesList.swift in Sources */,
 				239467A42D229E9500978DA7 /* MovieCastsDao.swift in Sources */,
