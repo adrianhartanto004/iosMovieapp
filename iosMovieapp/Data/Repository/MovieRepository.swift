@@ -3,7 +3,7 @@ import Combine
 
 protocol MovieRepository {
     func fetchNowPlayingMovies() -> AnyPublisher<Void, Error>
-    func getNowPlayingMovies() -> AnyPublisher<[NowPlayingMovies], Error>
+    func getNowPlayingMovies(limit: Int?) -> AnyPublisher<[NowPlayingMovies], Error>
     func fetchMovieDetail(movieId: Int) -> AnyPublisher<Void, Error>
     func getMovieDetail(movieId: Int) -> AnyPublisher<MovieDetail, Error>
     func fetchMovieCredits(movieId: Int) -> AnyPublisher<Void, Error>
@@ -60,8 +60,8 @@ class MovieRepositoryImpl: MovieRepository {
             .eraseToAnyPublisher()
     }
     
-    func getNowPlayingMovies() -> AnyPublisher<[NowPlayingMovies], Error> {
-        return self.nowPlayingMoviesDao.fetch()
+    func getNowPlayingMovies(limit: Int?) -> AnyPublisher<[NowPlayingMovies], Error> {
+        return self.nowPlayingMoviesDao.fetch(limit: limit)
     }
     
     func fetchMovieDetail(movieId: Int) -> AnyPublisher<Void, Error> {

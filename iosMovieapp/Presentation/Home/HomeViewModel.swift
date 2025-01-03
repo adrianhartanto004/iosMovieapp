@@ -35,7 +35,7 @@ class HomeViewModel: ObservableObject {
                     )
                     .eraseToAnyPublisher()
                 }
-                return self.getNowPlayingMoviesUsecase.execute()
+                return self.getNowPlayingMoviesUsecase.execute(limit: 20)
             }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
@@ -55,7 +55,7 @@ class HomeViewModel: ObservableObject {
     func loadNowPlayingMovies() {
         moviesError = nil
         isNowPlayingMoviesLoading = true
-        getNowPlayingMoviesUsecase.execute()
+        self.getNowPlayingMoviesUsecase.execute(limit: 20)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 switch completion {
@@ -69,9 +69,5 @@ class HomeViewModel: ObservableObject {
                 self?.nowPlayingMovies = nowPlayingMovies
             }
             .store(in: &self.cancellables)
-    }
-    
-    func loadMore() {
-        
     }
 }

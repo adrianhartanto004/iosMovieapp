@@ -2,7 +2,7 @@ import Foundation
 import Combine
 
 protocol GetNowPlayingMoviesUsecase {
-    func execute() -> AnyPublisher<[NowPlayingMovies], Error>
+    func execute(limit: Int?) -> AnyPublisher<[NowPlayingMovies], Error>
 }
 
 class GetNowPlayingMoviesUsecaseImpl: GetNowPlayingMoviesUsecase {
@@ -12,7 +12,7 @@ class GetNowPlayingMoviesUsecaseImpl: GetNowPlayingMoviesUsecase {
         self.movieRepository = movieRepository
     }
     
-    func execute() -> AnyPublisher<[NowPlayingMovies], Error> {
-        return movieRepository.getNowPlayingMovies()
+    func execute(limit: Int?) -> AnyPublisher<[NowPlayingMovies], Error> {
+        return movieRepository.getNowPlayingMovies(limit: limit)
     }
 }

@@ -4,7 +4,7 @@ import Combine
 
 protocol NowPlayingMoviesDao {
     func insertAll(_ items: [NowPlayingMovies]) -> AnyPublisher<Void, Error>
-    func fetch() -> AnyPublisher<[NowPlayingMovies], Error>
+    func fetch(limit: Int?) -> AnyPublisher<[NowPlayingMovies], Error>
     func deleteAll() -> AnyPublisher<Void, Error>
 }
 
@@ -39,10 +39,13 @@ class NowPlayingMoviesDaoImpl: NowPlayingMoviesDao {
         .eraseToAnyPublisher()
     }
     
-    func fetch() -> AnyPublisher<[NowPlayingMovies], Error> {
+    func fetch(limit: Int? = nil) -> AnyPublisher<[NowPlayingMovies], Error> {
         return Future { [weak self] promise in
             let request: NSFetchRequest<NowPlayingMoviesEntity> = NowPlayingMoviesEntity.fetchRequest()
             request.fetchBatchSize = 10
+            if let limit = limit {
+                request.fetchLimit = limit
+            }
             let sortDescriptor = NSSortDescriptor(key: "index", ascending: true)
             request.sortDescriptors = [sortDescriptor]
             guard let context = self?.persistentStore.backgroundContext else { return }
