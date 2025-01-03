@@ -20,43 +20,75 @@ struct NowPlayingMoviesListView: View {
                     .padding(.leading, 16)
             }
             .padding(.horizontal, 16)
-            List(viewModel.nowPlayingMovies, id: \.id) { movie in
-                HStack(alignment: .top) {
-                    VStack(alignment: .leading, spacing: 0) {
-                        WebImage(url: URL.initURL("\(Constants.EndpointUrls.baseImage)\(movie.posterPath)"))
-                            .resizable()
-                            .placeholder { 
-                                Rectangle().foregroundColor(.gray)
-                                    .shimmering()
+            List {
+                ForEach(viewModel.nowPlayingMovies, id: \.id) { movie in
+                    HStack(alignment: .top) {
+                        VStack(alignment: .leading, spacing: 0) {
+                            WebImage(url: URL.initURL("\(Constants.EndpointUrls.baseImage)\(movie.posterPath)"))
+                                .resizable()
+                                .placeholder { 
+                                    Rectangle().foregroundColor(.gray)
+                                        .shimmering()
+                                }
+                                .scaledToFill()
+                                .frame(width: UIScreen.main.bounds.size.width / 2.3, height: UIScreen.main.bounds.size.height / 3) 
+                                .cornerRadius(16)
+                        }
+                        VStack(alignment: .leading, spacing: 0) {
+                            Spacer()
+                            Text(movie.title)
+                                .padding(.top, 10)
+                                .lineLimit(4)
+                                .multilineTextAlignment(.leading)
+                            HStack {
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(.yellow)
+                                Text(String(format: "%.01f", movie.voteAverage))
+                                Text("(\(movie.voteCount))")
                             }
-                            .scaledToFill()
-                            .frame(width: UIScreen.main.bounds.size.width / 2.3, height: UIScreen.main.bounds.size.height / 3) 
-                            .cornerRadius(16)
-                    }
-                    VStack(alignment: .leading, spacing: 0) {
-                        Spacer()
-                        Text(movie.title)
-                            .padding(.top, 10)
-                            .lineLimit(4)
-                            .multilineTextAlignment(.leading)
-                        HStack {
-                            Image(systemName: "star.fill")
-                                .foregroundColor(.yellow)
-                            Text(String(format: "%.01f", movie.voteAverage))
-                            Text("(\(movie.voteCount))")
+                            Spacer()
                         }
-                        Spacer()
                     }
-                }
-                .onAppear {
-                    if shouldLoadMore(movieId: movie.id) {
-                        if viewModel.isFirstFetchSuccessful {
-                            viewModel.loadMoreNowPlayingMovies()
-                        } else {
-                            viewModel.fetchNowPlayingMovies() // refresh data
+                    .onAppear {
+                        if shouldLoadMore(movieId: movie.id) {
+                            if viewModel.isFirstFetchSuccessful {
+                                viewModel.loadMoreNowPlayingMovies()
+                            } else {
+                                viewModel.fetchNowPlayingMovies() // refresh data
+                            }
                         }
                     }
                 }
+                if viewModel.isLoadMoreMoviesLoading {
+                     HStack(alignment: .top) {
+                         VStack(alignment: .leading, spacing: 0) {
+                             Rectangle().foregroundColor(.gray)
+                                 .shimmering()
+                                 .frame(width: UIScreen.main.bounds.size.width / 2.3, height: UIScreen.main.bounds.size.height / 3) 
+                                 .cornerRadius(16)
+                         }
+                         VStack(alignment: .leading, spacing: 0) {
+                             Spacer()
+                             Text(String(repeating: "Shimmer", count: 2))
+                                 .redacted(reason: .placeholder)
+                                 .shimmering()
+                                 .padding(.top, 10)
+                                 .lineLimit(4)
+                                 .multilineTextAlignment(.leading)
+                             HStack {
+                                 Image(systemName: "star.fill")
+                                     .foregroundColor(.yellow)
+                                 Text(String(repeating: "10.0", count: 1))
+                                     .redacted(reason: .placeholder)
+                                     .shimmering()
+                                 Text(String(repeating: "Shimmer", count: 1))
+                                     .redacted(reason: .placeholder)
+                                     .shimmering()
+                             }
+                             Spacer()
+                         }
+                     }
+                 }
             }
             .introspect(.list, on: .iOS(.v13, .v14, .v15)) { tableView in
                 tableView.separatorStyle = .none
