@@ -13,7 +13,7 @@ struct MoviePhotosRequest: NetworkTarget {
     
     var queryParams: [String : String]? {
         [
-            "api_key": Constants.Key.API_KEY
+            "api_key": Key.API_KEY
         ]
     }
     

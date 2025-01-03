@@ -10,6 +10,7 @@
 		232074232CC97714008D6540 /* NowPlayingMoviesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232074222CC97714008D6540 /* NowPlayingMoviesListView.swift */; };
 		232074252CC97857008D6540 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232074242CC97857008D6540 /* ContentView.swift */; };
 		2345A3772D28858200BE6821 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 2345A3762D28858200BE6821 /* SwiftUIIntrospect */; };
+		2345A3792D288DED00BE6821 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2345A3782D288DED00BE6821 /* Key.swift */; };
 		234664AD2CBFEAAA00861E4A /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234664AC2CBFEAAA00861E4A /* HomeViewModel.swift */; };
 		234664BF2CBFEC5100861E4A /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234664AE2CBFEC5100861E4A /* APIError.swift */; };
 		234664C02CBFEC5100861E4A /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234664AF2CBFEC5100861E4A /* Configuration.swift */; };
@@ -148,6 +149,7 @@
 /* Begin PBXFileReference section */
 		232074222CC97714008D6540 /* NowPlayingMoviesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingMoviesListView.swift; sourceTree = "<group>"; };
 		232074242CC97857008D6540 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2345A3782D288DED00BE6821 /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		234664AC2CBFEAAA00861E4A /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		234664AE2CBFEC5100861E4A /* APIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		234664AF2CBFEC5100861E4A /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
@@ -319,6 +321,7 @@
 			isa = PBXGroup;
 			children = (
 				234664E32CBFF03600861E4A /* Constants.swift */,
+				2345A3782D288DED00BE6821 /* Key.swift */,
 				234664E72CBFF1A300861E4A /* Local */,
 				234664E62CBFF1A000861E4A /* Remote */,
 				234664E52CBFF19900861E4A /* Repository */,
@@ -924,6 +927,7 @@
 				23913FF02D200B790088821F /* MoviePhotoList.swift in Sources */,
 				23913FEC2D2004C00088821F /* MovieCreditList.swift in Sources */,
 				23913FDE2D1FF62D0088821F /* AuthorDetails.swift in Sources */,
+				2345A3792D288DED00BE6821 /* Key.swift in Sources */,
 				23D2BF9F2D2803220060EC0A /* LoadMoreNowPlayingMoviesUsecase.swift in Sources */,
 				234664F32CC0123800861E4A /* NowPlayingMoviesEntity+CoreDataClass.swift in Sources */,
 				23913FF42D200BF80088821F /* RecommendedMoviesList.swift in Sources */,
