@@ -5,90 +5,59 @@ import SwiftUIIntrospect
 struct NowPlayingMoviesListView: View {
     @Environment(\.presentationMode) var presentationMode
 
-    @ObservedObject private var viewModel = 
+    @StateObject private var viewModel = 
         ViewModelProvider.getInstance().provideNowPlayingMoviesListViewModel()
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Button {
-                    presentationMode.wrappedValue.dismiss()
-                } label: { 
-                    Image(systemName: "chevron.left")
-                }
-                Text("More Now Playing Movies")
-                    .padding(.leading, 16)
+            headerView
+            nowPlayingMoviesView
+        }
+        .padding(.top, 60)
+        .onAppear {
+            viewModel.loadNowPlayingMovies()
+            viewModel.fetchNowPlayingMovies()
+        }
+        .edgesIgnoringSafeArea([.all])
+        .navigationBarBackButtonHidden()
+    }
+}
+
+extension NowPlayingMoviesListView {
+    @ViewBuilder
+    private var headerView: some View {
+        HStack {
+            Button {
+                presentationMode.wrappedValue.dismiss()
+            } label: { 
+                Image(systemName: "chevron.left")
             }
-            .padding(.horizontal, 16)
-            List {
-                ForEach(viewModel.nowPlayingMovies, id: \.id) { movie in
-                    HStack(alignment: .top) {
-                        VStack(alignment: .leading, spacing: 0) {
-                            WebImage(url: URL.initURL("\(Constants.EndpointUrls.baseImage)\(movie.posterPath)"))
-                                .resizable()
-                                .placeholder { 
-                                    Rectangle().foregroundColor(.gray)
-                                        .shimmering()
-                                }
-                                .scaledToFill()
-                                .frame(width: UIScreen.main.bounds.size.width / 2.3, height: UIScreen.main.bounds.size.height / 3) 
-                                .cornerRadius(16)
-                        }
-                        VStack(alignment: .leading, spacing: 0) {
-                            Spacer()
-                            Text(movie.title)
-                                .padding(.top, 10)
-                                .lineLimit(4)
-                                .multilineTextAlignment(.leading)
-                            HStack {
-                                Image(systemName: "star.fill")
-                                    .foregroundColor(.yellow)
-                                Text(String(format: "%.01f", movie.voteAverage))
-                                Text("(\(movie.voteCount))")
-                            }
-                            Spacer()
-                        }
-                    }
-                    .onAppear {
-                        if shouldLoadMore(movieId: movie.id) {
-                            if viewModel.isFirstFetchSuccessful {
-                                viewModel.loadMoreNowPlayingMovies()
-                            } else {
-                                viewModel.fetchNowPlayingMovies() // refresh data
-                            }
-                        }
-                    }
+            Text("More Now Playing Movies")
+                .padding(.leading, 16)
+        }
+        .padding(.horizontal, 16)
+    }
+    
+    @ViewBuilder
+    private var nowPlayingMoviesView: some View {
+        if viewModel.moviesError != nil {
+            Button {
+                viewModel.loadNowPlayingMovies()
+                viewModel.fetchNowPlayingMovies()
+            } label: {
+                HStack {
+                    Text("Retry Fetch Now Playing Movies")
+                        .foregroundColor(Color.generalText)
+                        .padding(.horizontal, 32)
+                        .padding(.vertical, 16)
+                        .background(Color.buttonBackground)
                 }
-                if viewModel.isLoadMoreMoviesLoading {
-                     HStack(alignment: .top) {
-                         VStack(alignment: .leading, spacing: 0) {
-                             Rectangle().foregroundColor(.gray)
-                                 .shimmering()
-                                 .frame(width: UIScreen.main.bounds.size.width / 2.3, height: UIScreen.main.bounds.size.height / 3) 
-                                 .cornerRadius(16)
-                         }
-                         VStack(alignment: .leading, spacing: 0) {
-                             Spacer()
-                             Text(String(repeating: "Shimmer", count: 2))
-                                 .redacted(reason: .placeholder)
-                                 .shimmering()
-                                 .padding(.top, 10)
-                                 .lineLimit(4)
-                                 .multilineTextAlignment(.leading)
-                             HStack {
-                                 Image(systemName: "star.fill")
-                                     .foregroundColor(.yellow)
-                                 Text(String(repeating: "10.0", count: 1))
-                                     .redacted(reason: .placeholder)
-                                     .shimmering()
-                                 Text(String(repeating: "Shimmer", count: 1))
-                                     .redacted(reason: .placeholder)
-                                     .shimmering()
-                             }
-                             Spacer()
-                         }
-                     }
-                 }
+                .cornerRadius(24)
+            }
+            .padding(16)
+        } else {
+            List {
+                NowPlayingMoviesView(viewModel: viewModel)
             }
             .introspect(.list, on: .iOS(.v13, .v14, .v15)) { tableView in
                 tableView.separatorStyle = .none
@@ -101,25 +70,8 @@ struct NowPlayingMoviesListView: View {
                     collectionView.collectionViewLayout = layout 
                 }
             }
-            .listStyle(PlainListStyle())
+            .listStyle(.plain)
             .padding(.top, 16)
         }
-        .padding(.top, 60)
-        .onAppear {
-            viewModel.loadNowPlayingMovies()
-            viewModel.fetchNowPlayingMovies()
-        }
-        //        .background(Color.homeBackground)
-        .edgesIgnoringSafeArea([.all])
-        .navigationBarBackButtonHidden()
-    }
-    
-    private func shouldLoadMore(movieId: Int) -> Bool {
-        let isBottomNowPlayingMoviesItemNil = viewModel.bottomNowPlayingMoviesItem == nil
-        let isCurrentMovieIdAtBottom = movieId == viewModel.bottomNowPlayingMoviesItem?.id 
-        let isNowPlayingMoviesLoading = viewModel.isNowPlayingMoviesLoading
-        let isLoadMoreMoviesLoading = viewModel.isLoadMoreMoviesLoading
-        
-        return !isBottomNowPlayingMoviesItemNil && isCurrentMovieIdAtBottom && !isNowPlayingMoviesLoading && !isLoadMoreMoviesLoading
     }
 }

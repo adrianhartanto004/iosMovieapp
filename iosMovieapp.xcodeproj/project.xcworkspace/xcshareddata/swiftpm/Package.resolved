@@ -1,6 +1,15 @@
 {
-  "originHash" : "e9b376febd99632a7a914a34b0e012742afc480bd0082e3fd5b41df7a8b58d12",
+  "originHash" : "c8dc9fdfed9581bf7a01928042043715d73ff5b7aea6cb379bf35b2e0e8f169d",
   "pins" : [
+    {
+      "identity" : "publishedobject",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Amzd/PublishedObject",
+      "state" : {
+        "revision" : "e1e08d71008f3cb116e4ed1d3050d978c7bf1938",
+        "version" : "0.3.0"
+      }
+    },
     {
       "identity" : "sdwebimage",
       "kind" : "remoteSourceControl",

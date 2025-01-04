@@ -1,62 +1,62 @@
 import SwiftUI
-import SDWebImageSwiftUI
 
 struct FavouriteMoviesView: View {
     @Environment(\.presentationMode) var presentationMode
 
-    @ObservedObject private var viewModel =
+    @StateObject private var viewModel =
         ViewModelProvider.getInstance().provideFavouriteMoviesViewModel()
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    ForEach(viewModel.nowPlayingMovies, id: \.id) { movie in
-                        NavigationLink { 
-                            MovieDetailView(movieId: movie.id)
-                        } label: {
-                            HStack(alignment: .top) {
-                                VStack(alignment: .leading, spacing: 0) {
-                                    WebImage(url: URL.initURL("\(Constants.EndpointUrls.baseImage)\(movie.posterPath)"))
-                                        .resizable()
-                                        .placeholder { 
-                                            Rectangle().foregroundColor(.gray)
-                                                .shimmering()
-                                        }
-                                        .scaledToFill()
-                                        .frame(width: UIScreen.main.bounds.size.width / 2.3, height: UIScreen.main.bounds.size.height / 3) 
-                                        .cornerRadius(16)
-                                }
-                                VStack(alignment: .leading, spacing: 0) {
-                                    Spacer()
-                                    Text(movie.title)
-                                        .padding(.top, 10)
-                                        .lineLimit(4)
-                                        .multilineTextAlignment(.leading)
-                                    HStack {
-                                        Image(systemName: "star.fill")
-                                            .foregroundColor(.yellow)
-                                        Text(String(format: "%.01f", movie.voteAverage))
-                                        Text("(\(movie.voteCount))")
-                                    }
-                                    Spacer()
-                                }
-                            }
-                            .padding(.bottom, 16)
-                        }
+            if viewModel.nowPlayingMovies.isEmpty {
+                Text("Add movies to favourite")
+            } else {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        favouriteMoviesView
                     }
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                 }
-                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                .padding(.top, 16)
             }
-            .padding(.top, 16)
         }
         .padding(.top, 60)
         .padding(.horizontal, 16)
         .onAppear {
             viewModel.loadFavouriteMovies()
         }
-        //        .background(Color.homeBackground)
         .edgesIgnoringSafeArea([.all])
         .navigationBarBackButtonHidden()
+    }
+}
+
+extension FavouriteMoviesView {
+    @ViewBuilder
+    private var favouriteMoviesView: some View {
+        if viewModel.favouriteMoviesError != nil {
+            Button {
+                viewModel.loadFavouriteMovies()
+            } label: {
+                HStack {
+                    Text("Retry Fetch Now Playing Movies")
+                        .foregroundColor(Color.generalText)
+                        .padding(.horizontal, 32)
+                        .padding(.vertical, 16)
+                        .background(Color.buttonBackground)
+                }
+                .cornerRadius(24)
+            }
+            .padding(16)
+        } else {
+            if viewModel.isLoading {
+                ForEach(0..<5) { _ in
+                    FavouriteMoviesShimmerView()
+                }
+            } else {
+                ForEach(viewModel.nowPlayingMovies, id: \.id) { movie in
+                    FavouriteMoviesItemView(nowPlayingMovies: movie)
+                }
+            }
+        }
     }
 }

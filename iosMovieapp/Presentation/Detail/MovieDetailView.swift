@@ -6,7 +6,7 @@ struct MovieDetailView: View {
     
     @Environment(\.presentationMode) var presentationMode
 
-    @ObservedObject private var viewModel =
+    @StateObject private var viewModel =
         ViewModelProvider.getInstance().provideMovieDetailViewModel()
     
     var body: some View {
