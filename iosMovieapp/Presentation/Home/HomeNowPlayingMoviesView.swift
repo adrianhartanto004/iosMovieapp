@@ -12,6 +12,7 @@ struct HomeNowPlayingMoviesView: View {
         } else {
             ForEach(nowPlayingMovies, id: \.id) { movie in
                 HomeNowPlayingMoviesItemView(movie: movie)
+                    .padding(.trailing, movie.id == nowPlayingMovies.last!.id ? 20 : 0)
             }
         }
     }

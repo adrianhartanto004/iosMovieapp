@@ -11,315 +11,19 @@ struct MovieDetailView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Button {
-                    presentationMode.wrappedValue.dismiss()
-                } label: { 
-                    Image(systemName: "chevron.left")
-                }
-                Text("Movie Detail")
-                    .padding(.leading, 16)
-                Spacer()
-                Button {
-                    if let movieDetail = viewModel.movieDetail {
-                        viewModel.addOrRemoveFavouriteMovie(movieDetail: movieDetail)
-                    }
-                } label: {
-                    if viewModel.isFavouriteMovie {
-                        Image(systemName: "heart.fill")
-                            .foregroundColor(.red)
-                    } else {
-                        Image(systemName: "heart")
-                            .foregroundColor(.red)
-                    }
-                }
-            }
+            headerView
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 0) {
-                    if viewModel.isMovieDetailLoading {
-                        HStack {
-                            Rectangle()
-                                .frame(width: UIScreen.main.bounds.size.width / 2.3, height: UIScreen.main.bounds.size.height / 3) 
-                                .cornerRadius(16)
-                                .shimmering()
-                            VStack(alignment: .leading, spacing: 0) {
-                                Text(String(repeating: "Shimmer", count: 3))
-                                    .redacted(reason: .placeholder)
-                                    .shimmering()
-                                    .padding(.bottom, 8)
-                                HStack {
-                                    Image(systemName: "star.fill")
-                                        .foregroundColor(.yellow)
-                                    Text(String(repeating: "Shimmer", count: 2))
-                                        .redacted(reason: .placeholder)
-                                        .shimmering()
-                                }
-                                .padding(.bottom, 8)
-                                Text(String(repeating: "Shimmer", count: 2))
-                                    .redacted(reason: .placeholder)
-                                    .shimmering()
-                            }
-                            .padding(.leading, 8)
-                        }
-                        .padding(.bottom, 16)
-                        Text(String(repeating: "Shimmer", count: 4))
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                            .padding(.bottom, 4)
-                        Text(String(repeating: "Shimmer", count: 2))
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                        Text(String(repeating: "Shimmer", count: 3))
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                        Text(String(repeating: "Shimmer", count: 3))
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                            .padding(.bottom, 4)
-                        Text(String(repeating: "Shimmer", count: 2))
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                        Text(String(repeating: "Shimmer", count: 2))
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                        Text(String(repeating: "Shimmer", count: 1))
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                        Text(String(repeating: "Shimmer", count: 3))
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                            .padding(.bottom, 16)
-                    } else {
-                        HStack {
-                            WebImage(url: URL.initURL("\(Constants.EndpointUrls.baseImage)\(viewModel.movieDetail?.posterPath ?? "")"))
-                                .resizable()
-                                .placeholder { 
-                                    Rectangle().foregroundColor(.gray)
-                                        .shimmering()
-                                }
-                                .scaledToFill()
-                                .frame(width: UIScreen.main.bounds.size.width / 2.3, height: UIScreen.main.bounds.size.height / 3) 
-                                .cornerRadius(16)
-                            VStack(alignment: .leading, spacing: 0) {
-                                Text(viewModel.movieDetail?.title ?? "")
-                                    .padding(.bottom, 8)
-                                HStack {
-                                    Image(systemName: "star.fill")
-                                        .foregroundColor(.yellow)
-                                    Text(String(format: "%.01f", viewModel.movieDetail?.voteAverage ?? 0))
-                                    Text("( \(viewModel.movieDetail?.voteCount ?? 0) )")
-                                }
-                                .padding(.bottom, 8)
-                                Text((viewModel.movieDetail?.genres?.map{ genre in
-                                    genre.name
-                                }.joined(separator: ", ")) ?? "")
-                            }
-                            .padding(.leading, 8)
-                        }
-                        .padding(.bottom, 16)
-                        Text("Release date: \(viewModel.movieDetail?.releaseDate ?? "")")
-                            .padding(.bottom, 4)
-                        Text("Original language: \(viewModel.movieDetail?.originalLanguage ?? "")")
-                            .padding(.bottom, 4)
-                        Text("Production company: \(getProductionCompaniesText(productionCompanies: viewModel.movieDetail?.productionCompanies ?? []))")
-                            .padding(.bottom, 4)
-                        Text("Production countries: \(getProductionCountriesText(productionCountries: viewModel.movieDetail?.productionCountries ?? []))")
-                            .padding(.bottom, 4)
-                        Text("Budget: \(viewModel.movieDetail?.budget ?? 0)")
-                            .padding(.bottom, 4)
-                        Text("Revenue: \(viewModel.movieDetail?.revenue ?? 0)")
-                            .padding(.bottom, 16)
-                        Text("Overview")
-                            .fontWeight(.bold)
-                            .padding(.bottom, 4)
-                        Text("\(viewModel.movieDetail?.overview ?? "")")
-                            .padding(.bottom, 16)
-                    }
-                    if viewModel.isMovieCastsLoading {
-                        Text(String(repeating: "Shimmer", count: 1))
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                            .padding(.bottom, 12)
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(alignment: .top, spacing: 0) {
-                                ForEach(0..<6) { _ in
-                                    VStack(alignment: .center, spacing: 0) {
-                                        Rectangle().foregroundColor(.gray)
-                                            .frame(width: 96, height: 96) 
-                                            .clipShape(Circle())
-                                            .shimmering()
-                                            .padding(.bottom, 6)
-                                        Text(String(repeating: "Shimmer", count: 1))
-                                            .redacted(reason: .placeholder)
-                                            .shimmering()
-                                    }
-                                    .frame(width: 96) 
-                                    .padding(.trailing, 16)
-                                }
-                            }
-                        }
-                        .padding(.bottom, 16)
-                    } else {
-                        Text("Cast")
-                            .fontWeight(.bold)
-                            .padding(.bottom, 12)
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(alignment: .top, spacing: 0) {
-                                ForEach(viewModel.movieCasts, id: \.castId) { cast in
-                                    VStack(alignment: .center, spacing: 0) {
-                                        WebImage(url: URL.initURL("\(Constants.EndpointUrls.baseImage)\(cast.profilePath ?? "")"))
-                                            .resizable()
-                                            .placeholder { 
-                                                Rectangle().foregroundColor(.gray)
-                                                    .shimmering()
-                                            }
-                                            .scaledToFill()
-                                            .frame(width: 96, height: 96) 
-                                            .clipShape(Circle())
-                                            .padding(.bottom, 6)
-                                        Text(cast.name ?? "")
-                                            .lineLimit(2)
-                                            .multilineTextAlignment(.center)
-                                    }
-                                    .frame(width: 96) 
-                                    .padding(.trailing, 16)
-                                }
-                            }
-                        }
-                        .padding(.bottom, 16)
-                    }
-                    if viewModel.isMoviePhotosLoading {
-                        Text(String(repeating: "Shimmer", count: 1))
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                            .padding(.bottom, 12)
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(alignment: .top, spacing: 0) {
-                                ForEach(0..<6) { _ in
-                                    Rectangle().foregroundColor(.gray)
-                                        .frame(width: UIScreen.main.bounds.size.width / 1.6, height: UIScreen.main.bounds.size.height / 6)
-                                        .cornerRadius(16)
-                                        .shimmering()
-                                        .padding(.bottom, 6)
-                                        .padding(.trailing, 16)
-                                }
-                            }
-                        }
-                        .padding(.bottom, 16)
-                    } else {
-                        Text("Photo")
-                            .fontWeight(.bold)
-                            .padding(.bottom, 12)
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(alignment: .top, spacing: 0) {
-                                ForEach(viewModel.moviePhotos, id: \.self) { photo in
-                                    WebImage(url: URL.initURL("\(Constants.EndpointUrls.baseImage)\(photo.filePath ?? "")"))
-                                        .resizable()
-                                        .placeholder { 
-                                            Rectangle().foregroundColor(.gray)
-                                                .shimmering()
-                                        }
-                                        .scaledToFill()
-                                        .frame(width: UIScreen.main.bounds.size.width / 1.6, height: UIScreen.main.bounds.size.height / 6)
-                                        .cornerRadius(16)
-                                        .padding(.bottom, 6)
-                                        .padding(.trailing, 16)
-                                }
-                            }
-                        }
-                        .padding(.bottom, 16)
-                    }
-                    if viewModel.isMovieAuthorReviewsLoading {
-                        Text(String(repeating: "Reviews", count: 1))
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                            .padding(.bottom, 12)
-                        Text(String(repeating: "12 reviews", count: 1))
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                            .padding(.bottom, 12)
-                        ScrollView(.vertical, showsIndicators: false) {
-                            VStack(alignment: .leading, spacing: 0) {
-                                ForEach(0..<5) { _ in
-                                    HStack(alignment: .top, spacing: 0) {
-                                        Rectangle()
-                                            .frame(width: 96, height: 96) 
-                                            .cornerRadius(16)
-                                            .clipShape(Circle())
-                                            .shimmering()
-                                        VStack(alignment: .leading, spacing: 0) {
-                                            HStack(alignment: .top, spacing: 0) {
-                                                Text(String(repeating: "Shimmer", count: 2))
-                                                    .redacted(reason: .placeholder)
-                                                    .shimmering()
-                                                Spacer()
-                                                Image(systemName: "star.fill")
-                                                    .foregroundColor(.yellow)
-                                                    .padding(.trailing, 8)
-                                                Text(String(repeating: "8.0", count: 1))
-                                                    .redacted(reason: .placeholder)
-                                                    .shimmering()
-                                            }
-                                            Text(String(repeating: "Shimmer", count: 1))
-                                                .redacted(reason: .placeholder)
-                                                .shimmering()
-                                            Text(String(repeating: "Shimmer", count: 12))
-                                                .lineLimit(3)
-                                                .redacted(reason: .placeholder)
-                                                .shimmering()
-                                        }
-                                        .padding(.leading, 16)
-                                    }
-                                    .padding(.bottom, 16)
-                                }
-                            }
-                        }
-                        .padding(.bottom, 16)
-                    } else {
-                        Text("Reviews")
-                            .fontWeight(.bold)
-                            .padding(.bottom, 4)
-                        Text("^[\(viewModel.authorReviews.count) review](inflect: true)")
-                            .padding(.bottom, 16)
-                        ScrollView(.vertical, showsIndicators: false) {
-                            VStack(alignment: .leading, spacing: 0) {
-                                ForEach(viewModel.authorReviews, id: \.id) { authorReview in
-                                    HStack(alignment: .top, spacing: 0) {
-                                        WebImage(url: URL.initURL("\(Constants.EndpointUrls.baseImage)\(authorReview.authorDetails?.avatarPath ?? "")"))
-                                            .resizable()
-                                            .placeholder(Image(systemName: "person.crop.circle.fill"))
-                                            .scaledToFill()
-                                            .frame(width: 96, height: 96) 
-                                            .cornerRadius(16)
-                                            .clipShape(Circle())
-                                        VStack(alignment: .leading, spacing: 0) {
-                                            HStack(alignment: .top, spacing: 0) {
-                                                Text(authorReview.author ?? "")
-                                                Spacer()
-                                                Image(systemName: "star.fill")
-                                                    .foregroundColor(.yellow)
-                                                    .padding(.trailing, 8)
-                                                Text(String(format: "%.01f", authorReview.authorDetails?.rating ?? 0))
-                                            }
-                                            Text("\(authorReview.updatedAt?.prefix(10) ?? "")")
-                                            Text(authorReview.content ?? "")
-                                                .lineLimit(3)
-                                        }
-                                        .padding(.leading, 16)
-                                    }
-                                    .padding(.bottom, 16)
-                                }
-                            }
-                        }
-                        .padding(.bottom, 16)
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                    }
+                    movieDetailView
+                    movieDetailCastsView
+                    movieDetailPhotosView
+                    movieDetailAuthorReviewsView
                 }
             }
             .padding(.top, 16)
         }
         .padding(.top, 60)
-        .padding(.horizontal, 16)
+//        .padding(.horizontal, 16)
         .onAppear {
             viewModel.loadMovieDetail(movieId: movieId)
             viewModel.loadMovieCasts(movieId: movieId)
@@ -332,21 +36,146 @@ struct MovieDetailView: View {
 //            viewModel.fetchRecommendedMovies(movieId: movieId)
             viewModel.fetchAuthorReviews(movieId: movieId)
         }
-        //        .background(Color.homeBackground)
         .edgesIgnoringSafeArea([.all])
         .navigationBarBackButtonHidden()
     }
-    
-    private func getProductionCompaniesText(productionCompanies: [ProductionCompany]) -> String {
-        return productionCompanies.map { productionCompany in
-            productionCompany.name ?? ""
-        }.joined(separator: ", ")
+}
+
+extension MovieDetailView {
+    @ViewBuilder
+    private var headerView: some View {
+        HStack {
+            Button {
+                presentationMode.wrappedValue.dismiss()
+            } label: { 
+                Image(systemName: "chevron.left")
+            }
+            Text("Movie Detail")
+                .padding(.leading, 16)
+            Spacer()
+            Button {
+                if let movieDetail = viewModel.movieDetail {
+                    viewModel.addOrRemoveFavouriteMovie(movieDetail: movieDetail)
+                }
+            } label: {
+                if viewModel.isFavouriteMovie {
+                    Image(systemName: "heart.fill")
+                        .foregroundColor(.red)
+                } else {
+                    Image(systemName: "heart")
+                        .foregroundColor(.red)
+                }
+            }
+        }
+        .padding(.horizontal, 16)
     }
     
-    private func getProductionCountriesText(productionCountries: [ProductionCountry]) -> String {
-        return productionCountries.map { productionCountry in
-            productionCountry.name ?? ""
-        }.joined(separator: ", ")
+    @ViewBuilder
+    private var movieDetailView: some View {
+        if viewModel.movieDetailError != nil {
+            Button {
+                viewModel.loadMovieDetail(movieId: movieId)
+                viewModel.fetchMovieDetail(movieId: movieId)
+            } label: {
+                HStack {
+                    Text("Retry Fetch Movie Detail")
+                        .foregroundColor(Color.generalText)
+                        .padding(.horizontal, 32)
+                        .padding(.vertical, 16)
+                        .background(Color.buttonBackground)
+                }
+                .cornerRadius(24)
+            }
+            .padding(16)
+        } else {
+            if viewModel.isMovieDetailLoading {
+                MovieDetailShimmerView()
+                    .padding(.horizontal, 16)
+            } else {
+                MovieDetailContentView(viewModel: viewModel)
+                    .padding(.horizontal, 16)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var movieDetailCastsView: some View {
+        if viewModel.movieCastsError != nil {
+            Button {
+                viewModel.loadMovieCasts(movieId: movieId)
+                viewModel.fetchMovieCasts(movieId: movieId)
+            } label: {
+                HStack {
+                    Text("Retry Fetch Movie Casts")
+                        .foregroundColor(Color.generalText)
+                        .padding(.horizontal, 32)
+                        .padding(.vertical, 16)
+                        .background(Color.buttonBackground)
+                }
+                .cornerRadius(24)
+            }
+            .padding(16)
+        } else {
+            if viewModel.isMovieCastsLoading {
+                MovieDetailCastsShimmerView()
+            } else {
+                MovieDetailCastsView(viewModel: viewModel)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var movieDetailPhotosView: some View {
+        if viewModel.moviePhotosError != nil {
+            Button {
+                viewModel.loadMoviePhotos(movieId: movieId)
+                viewModel.fetchMoviePhotos(movieId: movieId)
+            } label: {
+                HStack {
+                    Text("Retry Fetch Movie Photos")
+                        .foregroundColor(Color.generalText)
+                        .padding(.horizontal, 32)
+                        .padding(.vertical, 16)
+                        .background(Color.buttonBackground)
+                }
+                .cornerRadius(24)
+            }
+            .padding(16)
+        } else {
+            if viewModel.isMoviePhotosLoading {
+                MovieDetailPhotosShimmerView()
+            } else {
+                MovieDetailPhotosView(viewModel: viewModel)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var movieDetailAuthorReviewsView: some View {
+        if viewModel.movieAuthorReviewsError != nil {
+            Button {
+                viewModel.loadAuthorReviews(movieId: movieId)
+                viewModel.fetchAuthorReviews(movieId: movieId)
+            } label: {
+                HStack {
+                    Text("Retry Fetch Author Reviews")
+                        .foregroundColor(Color.generalText)
+                        .padding(.horizontal, 32)
+                        .padding(.vertical, 16)
+                        .background(Color.buttonBackground)
+                }
+                .cornerRadius(24)
+            }
+            .padding(16)
+        } else {
+            if viewModel.isMovieAuthorReviewsLoading {
+                MovieDetailAuthorReviewsShimmerView()
+                    .padding(.horizontal, 16)
+            } else {
+                MovieDetailAuthorReviews(viewModel: viewModel)
+                    .padding(.horizontal, 16)
+            }
+        }
     }
 }
 

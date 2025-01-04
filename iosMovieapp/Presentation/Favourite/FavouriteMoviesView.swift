@@ -15,13 +15,13 @@ struct FavouriteMoviesView: View {
                     VStack(alignment: .leading, spacing: 0) {
                         favouriteMoviesView
                     }
+                    .padding(.horizontal, 16)
                     .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                 }
                 .padding(.top, 16)
             }
         }
         .padding(.top, 60)
-        .padding(.horizontal, 16)
         .onAppear {
             viewModel.loadFavouriteMovies()
         }
