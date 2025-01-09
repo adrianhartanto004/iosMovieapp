@@ -34,6 +34,7 @@ class FavouriteMoviesViewModel: ObservableObject {
                     self?.isLoading = false
                 }
             } receiveValue: { [weak self] nowPlayingMovies in
+                self?.favouriteMoviesError = nil
                 self?.nowPlayingMovies = nowPlayingMovies
             }
             .store(in: &self.cancellables)

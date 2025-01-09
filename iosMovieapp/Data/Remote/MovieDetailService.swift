@@ -5,7 +5,6 @@ protocol MovieDetailService {
     func fetchMovieDetail(movieId: Int) -> AnyPublisher<MovieDetail, Error>
     func fetchMovieCredits(movieId: Int) -> AnyPublisher<MovieCreditList, Error>
     func fetchMoviePhotos(movieId: Int) -> AnyPublisher<MoviePhotoList, Error>
-    func fetchRecommendedMovies(movieId: Int) -> AnyPublisher<RecommendedMoviesList, Error>
     func fetchAuthorReviews(movieId: Int) -> AnyPublisher<AuthorReviewList, Error>
 }
 
@@ -31,14 +30,6 @@ class MovieDetailServiceImpl: NetworkClientManager<HttpRequest>, MovieDetailServ
             request: HttpRequest(request: MoviePhotosRequest(movieId: movieId)),
             scheduler: DispatchQueue.main,
             responseObject: MoviePhotoList.self
-        )
-    }
-    
-    func fetchRecommendedMovies(movieId: Int) -> AnyPublisher<RecommendedMoviesList, Error> {
-        self.request(
-            request: HttpRequest(request: RecommendedMoviesRequest(movieId: movieId)),
-            scheduler: DispatchQueue.main,
-            responseObject: RecommendedMoviesList.self
         )
     }
     

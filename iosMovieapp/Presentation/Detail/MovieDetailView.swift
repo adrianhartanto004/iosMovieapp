@@ -23,7 +23,6 @@ struct MovieDetailView: View {
             .padding(.top, 16)
         }
         .padding(.top, 60)
-//        .padding(.horizontal, 16)
         .onAppear {
             viewModel.loadMovieDetail(movieId: movieId)
             viewModel.loadMovieCasts(movieId: movieId)
@@ -33,7 +32,6 @@ struct MovieDetailView: View {
             viewModel.fetchMovieDetail(movieId: movieId)
             viewModel.fetchMovieCasts(movieId: movieId)
             viewModel.fetchMoviePhotos(movieId: movieId)
-//            viewModel.fetchRecommendedMovies(movieId: movieId)
             viewModel.fetchAuthorReviews(movieId: movieId)
         }
         .edgesIgnoringSafeArea([.all])
@@ -72,7 +70,13 @@ extension MovieDetailView {
     
     @ViewBuilder
     private var movieDetailView: some View {
-        if viewModel.movieDetailError != nil {
+        if viewModel.movieDetail != nil {
+            MovieDetailContentView(viewModel: viewModel)
+                .padding(.horizontal, 16)
+        } else if viewModel.isMovieDetailLoading || viewModel.isMovieDetailRefreshing {
+            MovieDetailShimmerView()
+                .padding(.horizontal, 16)
+        } else if viewModel.movieDetailError != nil {
             Button {
                 viewModel.loadMovieDetail(movieId: movieId)
                 viewModel.fetchMovieDetail(movieId: movieId)
@@ -87,20 +91,20 @@ extension MovieDetailView {
                 .cornerRadius(24)
             }
             .padding(16)
-        } else {
-            if viewModel.isMovieDetailLoading {
-                MovieDetailShimmerView()
-                    .padding(.horizontal, 16)
-            } else {
-                MovieDetailContentView(viewModel: viewModel)
-                    .padding(.horizontal, 16)
-            }
         }
     }
     
     @ViewBuilder
     private var movieDetailCastsView: some View {
-        if viewModel.movieCastsError != nil {
+        Text("Cast")
+            .fontWeight(.bold)
+            .padding(.bottom, 12)
+            .padding(.horizontal, 16)
+        if !viewModel.movieCasts.isEmpty {
+            MovieDetailCastsView(viewModel: viewModel)
+        } else if viewModel.isMovieCastsLoading || viewModel.isMovieCastsRefreshing {
+            MovieDetailCastsShimmerView()
+        } else if viewModel.movieCastsError != nil {
             Button {
                 viewModel.loadMovieCasts(movieId: movieId)
                 viewModel.fetchMovieCasts(movieId: movieId)
@@ -115,18 +119,20 @@ extension MovieDetailView {
                 .cornerRadius(24)
             }
             .padding(16)
-        } else {
-            if viewModel.isMovieCastsLoading {
-                MovieDetailCastsShimmerView()
-            } else {
-                MovieDetailCastsView(viewModel: viewModel)
-            }
         }
     }
     
     @ViewBuilder
     private var movieDetailPhotosView: some View {
-        if viewModel.moviePhotosError != nil {
+        Text("Photo")
+            .fontWeight(.bold)
+            .padding(.bottom, 12)
+            .padding(.horizontal, 16)
+        if !viewModel.moviePhotos.isEmpty {
+            MovieDetailPhotosView(viewModel: viewModel)
+        } else if viewModel.isMoviePhotosLoading || viewModel.isMoviePhotosRefreshing {
+            MovieDetailPhotosShimmerView()
+        } else if viewModel.moviePhotosError != nil {
             Button {
                 viewModel.loadMoviePhotos(movieId: movieId)
                 viewModel.fetchMoviePhotos(movieId: movieId)
@@ -141,18 +147,25 @@ extension MovieDetailView {
                 .cornerRadius(24)
             }
             .padding(16)
-        } else {
-            if viewModel.isMoviePhotosLoading {
-                MovieDetailPhotosShimmerView()
-            } else {
-                MovieDetailPhotosView(viewModel: viewModel)
-            }
         }
     }
     
     @ViewBuilder
     private var movieDetailAuthorReviewsView: some View {
-        if viewModel.movieAuthorReviewsError != nil {
+        Text("Reviews")
+            .fontWeight(.bold)
+            .padding(.bottom, 4)
+            .padding(.horizontal, 16)
+        Text("^[\(viewModel.authorReviews.count) review](inflect: true)")
+            .padding(.bottom, 16)
+            .padding(.horizontal, 16)
+        if !viewModel.authorReviews.isEmpty {
+            MovieDetailAuthorReviews(viewModel: viewModel)
+                .padding(.horizontal, 16)
+        } else if viewModel.isMovieAuthorReviewsLoading || viewModel.isMovieAuthorReviewsRefreshing {
+            MovieDetailAuthorReviewsShimmerView()
+                .padding(.horizontal, 16)
+        } else if viewModel.movieAuthorReviewsError != nil {
             Button {
                 viewModel.loadAuthorReviews(movieId: movieId)
                 viewModel.fetchAuthorReviews(movieId: movieId)
@@ -167,14 +180,6 @@ extension MovieDetailView {
                 .cornerRadius(24)
             }
             .padding(16)
-        } else {
-            if viewModel.isMovieAuthorReviewsLoading {
-                MovieDetailAuthorReviewsShimmerView()
-                    .padding(.horizontal, 16)
-            } else {
-                MovieDetailAuthorReviews(viewModel: viewModel)
-                    .padding(.horizontal, 16)
-            }
         }
     }
 }

@@ -32,8 +32,6 @@ class ViewModelProvider {
             UsecaseProvider.getInstance().provideFetchMoviePhotosUsecase()
         let getMoviePhotosUsecase = 
             UsecaseProvider.getInstance().provideGetMoviePhotosUsecase()
-        let fetchRecommendedMoviesUsecase = 
-            UsecaseProvider.getInstance().provideFetchRecommendedMoviesUsecase()
         let fetchAuthorReviewsUsecase = 
             UsecaseProvider.getInstance().provideFetchAuthorReviewsUsecase()
         let getAuthorReviewsUsecase = 
@@ -50,7 +48,6 @@ class ViewModelProvider {
             getMovieCastsUsecase,
             fetchMoviePhotosUsecase,
             getMoviePhotosUsecase,
-            fetchRecommendedMoviesUsecase,
             fetchAuthorReviewsUsecase,
             getAuthorReviewsUsecase,
             addOrRemoveFavouriteMoviesUsecase,

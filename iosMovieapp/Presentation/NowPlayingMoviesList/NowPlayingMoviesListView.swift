@@ -15,8 +15,10 @@ struct NowPlayingMoviesListView: View {
         }
         .padding(.top, 60)
         .onAppear {
-            viewModel.loadNowPlayingMovies()
-            viewModel.fetchNowPlayingMovies()
+            if viewModel.nowPlayingMovies.isEmpty {
+                viewModel.loadNowPlayingMovies()
+                viewModel.fetchNowPlayingMovies()
+            }
         }
         .edgesIgnoringSafeArea([.all])
         .navigationBarBackButtonHidden()
@@ -40,38 +42,42 @@ extension NowPlayingMoviesListView {
     
     @ViewBuilder
     private var nowPlayingMoviesView: some View {
-        if viewModel.moviesError != nil {
-            Button {
-                viewModel.loadNowPlayingMovies()
-                viewModel.fetchNowPlayingMovies()
-            } label: {
-                HStack {
-                    Text("Retry Fetch Now Playing Movies")
-                        .foregroundColor(Color.generalText)
-                        .padding(.horizontal, 32)
-                        .padding(.vertical, 16)
-                        .background(Color.buttonBackground)
-                }
-                .cornerRadius(24)
-            }
-            .padding(16)
-        } else {
-            List {
+        List {
+            if !viewModel.nowPlayingMovies.isEmpty {
                 NowPlayingMoviesView(viewModel: viewModel)
-            }
-            .introspect(.list, on: .iOS(.v13, .v14, .v15)) { tableView in
-                tableView.separatorStyle = .none
-            }
-            .introspect(.list, on: .iOS(.v16, .v17, .v18)) { collectionView in
-                if #available(iOS 14.0, *) {
-                    var config = UICollectionLayoutListConfiguration(appearance: .plain)
-                    config.showsSeparators = false
-                    let layout = UICollectionViewCompositionalLayout.list(using: config)
-                    collectionView.collectionViewLayout = layout 
+            } else if viewModel.isLoadMoreMoviesLoading || viewModel.isNowPlayingMoviesRefreshing {
+                ForEach(0..<5) { _ in
+                    NowPlayingMoviesShimmerView()
                 }
+            } else if viewModel.moviesError != nil {
+                Button {
+                    viewModel.loadNowPlayingMovies()
+                    viewModel.fetchNowPlayingMovies()
+                } label: {
+                    HStack {
+                        Text("Retry Fetch Now Playing Movies")
+                            .foregroundColor(Color.generalText)
+                            .padding(.horizontal, 32)
+                            .padding(.vertical, 16)
+                            .background(Color.buttonBackground)
+                    }
+                    .cornerRadius(24)
+                }
+                .padding(16)
             }
-            .listStyle(.plain)
-            .padding(.top, 16)
         }
+        .introspect(.list, on: .iOS(.v13, .v14, .v15)) { tableView in
+            tableView.separatorStyle = .none
+        }
+        .introspect(.list, on: .iOS(.v16, .v17, .v18)) { collectionView in
+            if #available(iOS 14.0, *) {
+                var config = UICollectionLayoutListConfiguration(appearance: .plain)
+                config.showsSeparators = false
+                let layout = UICollectionViewCompositionalLayout.list(using: config)
+                collectionView.collectionViewLayout = layout 
+            }
+        }
+        .listStyle(.plain)
+        .padding(.top, 16)
     }
 }

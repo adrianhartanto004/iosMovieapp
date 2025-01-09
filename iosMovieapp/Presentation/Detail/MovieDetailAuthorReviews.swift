@@ -5,11 +5,6 @@ struct MovieDetailAuthorReviews: View {
     @ObservedObject var viewModel: MovieDetailViewModel
 
     var body: some View {
-        Text("Reviews")
-            .fontWeight(.bold)
-            .padding(.bottom, 4)
-        Text("^[\(viewModel.authorReviews.count) review](inflect: true)")
-            .padding(.bottom, 16)
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 0) {
                 ForEach(viewModel.authorReviews, id: \.id) { authorReview in

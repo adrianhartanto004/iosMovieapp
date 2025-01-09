@@ -1,0 +1,27 @@
+{
+  "configurations" : [
+    {
+      "id" : "2A525239-2977-4E39-A149-BC8990CFAF28",
+      "name" : "Configuration 1",
+      "options" : {
+        "addressSanitizer" : {
+          "enabled" : false
+        }
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:iosMovieapp.xcodeproj",
+        "identifier" : "23F165CF2CBFB052002140DB",
+        "name" : "iosMovieappTests"
+      }
+    }
+  ],
+  "version" : 1
+}

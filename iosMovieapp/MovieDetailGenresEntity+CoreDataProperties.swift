@@ -9,6 +9,7 @@ extension MovieDetailGenresEntity {
     }
 
     @NSManaged public var id: Int32
+    @NSManaged public var index: Int32
     @NSManaged public var name: String?
     @NSManaged public var genresRelation: MovieDetailEntity?
 

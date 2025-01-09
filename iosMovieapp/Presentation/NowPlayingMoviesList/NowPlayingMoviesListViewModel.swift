@@ -2,6 +2,7 @@ import Combine
 import Foundation
 
 class NowPlayingMoviesListViewModel: ObservableObject {
+    @Published var isNowPlayingMoviesRefreshing = false
     @Published var isNowPlayingMoviesLoading = false
     @Published var isLoadMoreMoviesLoading = false
     @Published var nowPlayingMovies: [NowPlayingMovies] = []
@@ -34,7 +35,7 @@ class NowPlayingMoviesListViewModel: ObservableObject {
     func fetchNowPlayingMovies() {
         moviesError = nil
         currentPage = 1
-        isNowPlayingMoviesLoading = true
+        isNowPlayingMoviesRefreshing = true
         fetchNowPlayingMoviesUsecase.execute()
             .flatMap { [weak self] _ -> AnyPublisher<[NowPlayingMovies], Error> in
                 guard let self = self else {
@@ -50,13 +51,14 @@ class NowPlayingMoviesListViewModel: ObservableObject {
             .sink { [weak self] completion in
                 switch completion {
                 case .finished:
-                    self?.isNowPlayingMoviesLoading = false
+                    self?.isNowPlayingMoviesRefreshing = false
                 case .failure(let error):
                     self?.moviesError = error
-                    self?.isNowPlayingMoviesLoading = false
+                    self?.isNowPlayingMoviesRefreshing = false
                     self?.isFirstFetchSuccessful = false
                 }
             } receiveValue: { [weak self] nowPlayingMovies in
+                self?.moviesError = nil
                 self?.nowPlayingMovies = nowPlayingMovies
                 self?.bottomNowPlayingMoviesItem = nowPlayingMovies.last
                 self?.isFirstFetchSuccessful = true
@@ -78,6 +80,7 @@ class NowPlayingMoviesListViewModel: ObservableObject {
                     self?.isNowPlayingMoviesLoading = false
                 }
             } receiveValue: { [weak self] nowPlayingMovies in
+                self?.moviesError = nil
                 self?.nowPlayingMovies = nowPlayingMovies
                 self?.bottomNowPlayingMoviesItem = nowPlayingMovies.last
             }
@@ -109,6 +112,7 @@ class NowPlayingMoviesListViewModel: ObservableObject {
                     self?.isLoadMoreMoviesLoading = false
                 }
             } receiveValue: { [weak self] nowPlayingMovies in
+                self?.loadMoreError = nil
                 self?.nowPlayingMovies = nowPlayingMovies
                 self?.bottomNowPlayingMoviesItem = nowPlayingMovies.last
                 self?.currentPage = nextPage

@@ -19,7 +19,7 @@ class MovieDetailDaoImpl: MovieDetailDao {
     
     func insert(_ item: MovieDetail) -> AnyPublisher<Void, Error> {
         return Future<Void, Error> { [weak self] promise in
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.configureAsUpdateContext()
             context.perform {
                 do {
@@ -39,6 +39,7 @@ class MovieDetailDaoImpl: MovieDetailDao {
                         guard let genresEntity = MovieDetailGenresEntity.insertNew(in: context) else { return }
                         genresEntity.id = Int32(genre.id)
                         genresEntity.name = genre.name
+                        genresEntity.index = Int32(genreIndex)
                         genresEntity.genresRelation = movieDetailEntity
                         movieDetailEntity.addToGenres(genresEntity)
                     }
@@ -49,6 +50,7 @@ class MovieDetailDaoImpl: MovieDetailDao {
                         productionCompanyEntity.name = productionCompany.name ?? ""
                         productionCompanyEntity.originCountry = productionCompany.originCountry ?? ""
                         productionCompanyEntity.productionCompaniesRelation = movieDetailEntity
+                        productionCompanyEntity.index = Int32(productionCompanyIndex)
                         movieDetailEntity.addToProductionCompanies(productionCompanyEntity)
                     }
                     
@@ -57,6 +59,7 @@ class MovieDetailDaoImpl: MovieDetailDao {
                         productionCountryEntity.isoDate = productionCountry.isoDate ?? ""
                         productionCountryEntity.name = productionCountry.name ?? ""
                         productionCountryEntity.productionCountriesRelation = movieDetailEntity
+                        productionCountryEntity.index = Int32(productionCountryIndex)
                         movieDetailEntity.addToProductionCountries(productionCountryEntity)
                     }
                     
@@ -79,12 +82,14 @@ class MovieDetailDaoImpl: MovieDetailDao {
             request.predicate = NSPredicate(format: "id == %d", movieId)
             request.fetchLimit = 1
             request.relationshipKeyPathsForPrefetching = ["genres", "productionCompanies", "productionCountries"]
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.perform {
                 do {
-                    guard let movieDetailEntity = try context.fetch(request).first else { return }
+                    guard let movieDetailEntity = try context.fetch(request).first else { return promise(.failure(CoreDataError.dataNotAvailable)) }
 
-                    let genres: [Genre] = (movieDetailEntity.genres?.allObjects as? [MovieDetailGenresEntity])?.map {
+                    let genres: [Genre] = (movieDetailEntity.genres?.allObjects as? [MovieDetailGenresEntity])?
+                        .sorted { $0.index < $1.index }
+                        .map {
                         genreEntity in
                         Genre(
                             id: Int(genreEntity.id),
@@ -92,7 +97,9 @@ class MovieDetailDaoImpl: MovieDetailDao {
                         )
                     } ?? []
                     
-                    let productionCompanies: [ProductionCompany] = (movieDetailEntity.productionCompanies?.allObjects as? [MovieDetailProductionCompaniesEntity])?.map {
+                    let productionCompanies: [ProductionCompany] = (movieDetailEntity.productionCompanies?.allObjects as? [MovieDetailProductionCompaniesEntity])?
+                        .sorted { $0.index < $1.index }
+                        .map {
                         productionCompanyEntity in
                         ProductionCompany(
                             id: Int(productionCompanyEntity.id),
@@ -101,7 +108,9 @@ class MovieDetailDaoImpl: MovieDetailDao {
                         )
                     } ?? []
                     
-                    let productionCountries: [ProductionCountry] = (movieDetailEntity.productionCountries?.allObjects as? [MovieDetailProductionCountriesEntity])?.map {
+                    let productionCountries: [ProductionCountry] = (movieDetailEntity.productionCountries?.allObjects as? [MovieDetailProductionCountriesEntity])?
+                        .sorted { $0.index < $1.index }
+                        .map {
                         productionCountryEntity in
                         ProductionCountry(
                             isoDate: productionCountryEntity.isoDate ?? "",
@@ -139,7 +148,7 @@ class MovieDetailDaoImpl: MovieDetailDao {
             let request: NSFetchRequest<MovieDetailEntity> = MovieDetailEntity.fetchRequest()
             request.predicate = NSPredicate(format: "id == %d", movieId)
             request.fetchLimit = 1
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.perform {
                 do {
                     if let movieDetailEntity = try context.fetch(request).first {

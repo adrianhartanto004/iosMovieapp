@@ -5,10 +5,6 @@ struct MovieDetailPhotosView: View {
     @ObservedObject var viewModel: MovieDetailViewModel
 
     var body: some View {
-        Text("Photo")
-            .fontWeight(.bold)
-            .padding(.bottom, 12)
-            .padding(.horizontal, 16)
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top, spacing: 0) {
                 ForEach(viewModel.moviePhotos, id: \.self) { photo in

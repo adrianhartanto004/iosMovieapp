@@ -19,7 +19,7 @@ class MovieAuthorReviewsDaoImpl: MovieAuthorReviewsDao {
     
     func insertAll(movieId: Int, _ items: [AuthorReview]) -> AnyPublisher<Void, Error> {
         return Future<Void, Error> { [weak self] promise in
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.configureAsUpdateContext()
             context.perform {
                 do {
@@ -59,10 +59,10 @@ class MovieAuthorReviewsDaoImpl: MovieAuthorReviewsDao {
             request.predicate = NSPredicate(format: "id == %d", movieId)
             request.fetchLimit = 1
             request.relationshipKeyPathsForPrefetching = ["authorReviews"]
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.perform {
                 do {
-                    guard let movieAuthorReviewListEntity = try context.fetch(request).first else { return }
+                    guard let movieAuthorReviewListEntity = try context.fetch(request).first  else { return promise(.failure(CoreDataError.dataNotAvailable)) }
 
                     let authorReviews: [AuthorReview] = (movieAuthorReviewListEntity.authorReviews?.allObjects as? [MovieAuthorReviewsEntity])?.sorted(by: { $0.index < $1.index} ).map { authorReview in
                         AuthorReview(
@@ -88,7 +88,7 @@ class MovieAuthorReviewsDaoImpl: MovieAuthorReviewsDao {
             let request: NSFetchRequest<MovieAuthorReviewListEntity> = MovieAuthorReviewListEntity.fetchRequest()
             request.predicate = NSPredicate(format: "id == %d", movieId)
             request.fetchLimit = 1
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.perform {
                 do {
                     if let movieAuthorReviewListEntity = try context.fetch(request).first {

@@ -51,21 +51,23 @@
     </entity>
     <entity name="MovieDetailGenresEntity" representedClassName="MovieDetailGenresEntity" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="genresRelation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieDetailEntity" inverseName="genres" inverseEntity="MovieDetailEntity"/>
     </entity>
     <entity name="MovieDetailProductionCompaniesEntity" representedClassName="MovieDetailProductionCompaniesEntity" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="originCountry" optional="YES" attributeType="String"/>
         <relationship name="productionCompaniesRelation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieDetailEntity" inverseName="productionCompanies" inverseEntity="MovieDetailEntity"/>
     </entity>
     <entity name="MovieDetailProductionCountriesEntity" representedClassName="MovieDetailProductionCountriesEntity" syncable="YES">
+        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="isoDate" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="productionCountriesRelation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieDetailEntity" inverseName="productionCountries" inverseEntity="MovieDetailEntity"/>
     </entity>
-    <entity name="MovieDetailRecommendedMoviesEntity" representedClassName="MovieDetailRecommendedMoviesEntity" syncable="YES"/>
     <entity name="MoviePhotoListEntity" representedClassName="MoviePhotoListEntity" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MoviePhotosEntity" inverseName="photosRelation" inverseEntity="MoviePhotosEntity"/>

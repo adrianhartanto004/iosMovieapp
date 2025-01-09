@@ -20,7 +20,7 @@ class FavouriteMoviesDaoImpl: FavouriteMoviesDao {
     
     func insert(movieDetail: MovieDetail) -> AnyPublisher<Void, Error> {
         return Future<Void, Error> { [weak self] promise in
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.configureAsUpdateContext()
             context.perform {
                 do {
@@ -52,7 +52,7 @@ class FavouriteMoviesDaoImpl: FavouriteMoviesDao {
             request.fetchBatchSize = 10
             let sortDescriptor = NSSortDescriptor(key: "addedAt", ascending: false)
             request.sortDescriptors = [sortDescriptor]
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.perform {
                 do {
                     let favouriteMoviesEntity = try context.fetch(request)               
@@ -80,7 +80,7 @@ class FavouriteMoviesDaoImpl: FavouriteMoviesDao {
             let request: NSFetchRequest<FavouriteMoviesEntity> = FavouriteMoviesEntity.fetchRequest()
             request.predicate = NSPredicate(format: "id == %d", movieId)
             request.fetchLimit = 1
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.perform {
                 do {
                     if try context.fetch(request).first != nil {
@@ -100,7 +100,7 @@ class FavouriteMoviesDaoImpl: FavouriteMoviesDao {
             let request: NSFetchRequest<FavouriteMoviesEntity> = FavouriteMoviesEntity.fetchRequest()
             request.predicate = NSPredicate(format: "id == %d", movieId)
             request.fetchLimit = 1
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.perform {
                 do {
                     if let favouriteMoviesEntity = try context.fetch(request).first {

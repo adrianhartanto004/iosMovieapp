@@ -19,7 +19,7 @@ class NowPlayingMoviesDaoImpl: NowPlayingMoviesDao {
     
     func insertAll(_ items: [NowPlayingMovies]) -> AnyPublisher<Void, Error> {
         return Future<Void, Error> { [weak self] promise in
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.configureAsUpdateContext()
             context.perform {
                 do {
@@ -48,7 +48,7 @@ class NowPlayingMoviesDaoImpl: NowPlayingMoviesDao {
             }
             let sortDescriptor = NSSortDescriptor(key: "addedAt", ascending: true)
             request.sortDescriptors = [sortDescriptor]
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.perform {
                 do {
                     let managedObjects = try context.fetch(request)
@@ -69,7 +69,7 @@ class NowPlayingMoviesDaoImpl: NowPlayingMoviesDao {
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.DBName.nowPlayingMoviesEntity)
             let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: request)
             batchDeleteRequest.resultType = .resultTypeCount
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.perform {
                 do {
                     try context.execute(batchDeleteRequest)

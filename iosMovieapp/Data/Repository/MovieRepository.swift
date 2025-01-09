@@ -11,7 +11,6 @@ protocol MovieRepository {
     func getMovieCasts(movieId: Int) -> AnyPublisher<[Cast], Error>
     func fetchMoviePhotos(movieId: Int) -> AnyPublisher<Void, Error>
     func getMoviePhotos(movieId: Int) -> AnyPublisher<[Photo], Error>
-    func fetchRecommendedMovies(movieId: Int) -> AnyPublisher<RecommendedMoviesList, Error>
     func fetchAuthorReviews(movieId: Int) -> AnyPublisher<Void, Error>
     func getAuthorReviews(movieId: Int) -> AnyPublisher<[AuthorReview], Error>
 }
@@ -146,13 +145,6 @@ class MovieRepositoryImpl: MovieRepository {
     
     func getMoviePhotos(movieId: Int) -> AnyPublisher<[Photo], Error> {
         return self.moviePhotosDao.fetch(movieId: movieId)
-    }
-    
-    func fetchRecommendedMovies(movieId: Int) -> AnyPublisher<RecommendedMoviesList, Error> {
-        var recommendedMoviesList: RecommendedMoviesList?
-        return movieDetailService
-            .fetchRecommendedMovies(movieId: movieId)
-            .eraseToAnyPublisher()
     }
     
     func fetchAuthorReviews(movieId: Int) -> AnyPublisher<Void, Error> {

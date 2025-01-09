@@ -52,11 +52,6 @@ class UsecaseProvider {
         return GetMoviePhotosUsecaseImpl(movieRepository: movieRepository)
     }
     
-    func provideFetchRecommendedMoviesUsecase() -> FetchRecommendedMoviesUsecase {
-        let movieRepository = RepositoryProvider.getInstance().provideMovieRepository()
-        return FetchRecommendedMoviesUsecaseImpl(movieRepository: movieRepository)
-    }
-    
     func provideFetchAuthorReviewsUsecase() -> FetchAuthorReviewsUsecase {
         let movieRepository = RepositoryProvider.getInstance().provideMovieRepository()
         return FetchAuthorReviewsUsecaseImpl(movieRepository: movieRepository)

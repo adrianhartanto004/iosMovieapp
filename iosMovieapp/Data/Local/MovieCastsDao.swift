@@ -19,7 +19,7 @@ class MovieCastsDaoImpl: MovieCastsDao {
     
     func insertAll(movieId: Int, _ items: [Cast]) -> AnyPublisher<Void, Error> {
         return Future<Void, Error> { [weak self] promise in
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.configureAsUpdateContext()
             context.perform {
                 do {
@@ -56,10 +56,10 @@ class MovieCastsDaoImpl: MovieCastsDao {
             request.predicate = NSPredicate(format: "id == %d", movieId)
             request.fetchLimit = 1
             request.relationshipKeyPathsForPrefetching = ["casts"]
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.perform {
                 do {
-                    guard let movieCreditListEntity = try context.fetch(request).first else { return }
+                    guard let movieCreditListEntity = try context.fetch(request).first else { return promise(.failure(CoreDataError.dataNotAvailable)) }
 
                     let casts: [Cast] = (movieCreditListEntity.casts?.allObjects as? [MovieCastsEntity])?.sorted(by: { $0.index < $1.index} ).map  {
                         castEntity in
@@ -84,7 +84,7 @@ class MovieCastsDaoImpl: MovieCastsDao {
             let request: NSFetchRequest<MovieCreditListEntity> = MovieCreditListEntity.fetchRequest()
             request.predicate = NSPredicate(format: "id == %d", movieId)
             request.fetchLimit = 1
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.perform {
                 do {
                     if let movieCreditListEntity = try context.fetch(request).first {

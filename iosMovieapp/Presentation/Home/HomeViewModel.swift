@@ -2,6 +2,7 @@ import Combine
 import Foundation
 
 class HomeViewModel: ObservableObject {
+    @Published var isNowPlayingMoviesRefreshing = false
     @Published var isNowPlayingMoviesLoading = false
     @Published var nowPlayingMovies: [NowPlayingMovies] = []
     @Published var moviesError: Error?
@@ -25,7 +26,7 @@ class HomeViewModel: ObservableObject {
     
     func fetchNowPlayingMovies() {
         moviesError = nil
-        isNowPlayingMoviesLoading = true
+        isNowPlayingMoviesRefreshing = true
         fetchNowPlayingMoviesUsecase.execute()
             .flatMap { [weak self] _ -> AnyPublisher<[NowPlayingMovies], Error> in
                 guard let self = self else {
@@ -41,12 +42,13 @@ class HomeViewModel: ObservableObject {
             .sink { [weak self] completion in
                 switch completion {
                 case .finished:
-                    self?.isNowPlayingMoviesLoading = false
+                    self?.isNowPlayingMoviesRefreshing = false
                 case .failure(let error):
                     self?.moviesError = error
-                    self?.isNowPlayingMoviesLoading = false
+                    self?.isNowPlayingMoviesRefreshing = false
                 }
             } receiveValue: { [weak self] nowPlayingMovies in
+                self?.moviesError = nil
                 self?.nowPlayingMovies = nowPlayingMovies
             }
             .store(in: &cancellables)
@@ -66,6 +68,7 @@ class HomeViewModel: ObservableObject {
                     self?.isNowPlayingMoviesLoading = false
                 }
             } receiveValue: { [weak self] nowPlayingMovies in
+                self?.moviesError = nil
                 self?.nowPlayingMovies = nowPlayingMovies
             }
             .store(in: &self.cancellables)

@@ -9,6 +9,7 @@ extension MovieDetailProductionCompaniesEntity {
     }
 
     @NSManaged public var id: Int32
+    @NSManaged public var index: Int32
     @NSManaged public var name: String?
     @NSManaged public var originCountry: String?
     @NSManaged public var productionCompaniesRelation: MovieDetailEntity?

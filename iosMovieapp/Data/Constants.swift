@@ -7,7 +7,6 @@ enum Constants {
         static let movieDetail = "/movie/"
         static let fetchMovieCredits = "/credits"
         static let fetchMovieImages = "/images"
-        static let fetchMovieRecommendedMovies = "/recommendations"
         static let fetchMovieAuthorReviews = "/reviews"
     }
     

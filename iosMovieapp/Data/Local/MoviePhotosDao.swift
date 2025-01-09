@@ -19,7 +19,7 @@ class MoviePhotosDaoImpl: MoviePhotosDao {
     
     func insertAll(movieId: Int, _ items: [Photo]) -> AnyPublisher<Void, Error> {
         return Future<Void, Error> { [weak self] promise in
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.configureAsUpdateContext()
             context.perform {
                 do {
@@ -54,10 +54,10 @@ class MoviePhotosDaoImpl: MoviePhotosDao {
             request.predicate = NSPredicate(format: "id == %d", movieId)
             request.fetchLimit = 1
             request.relationshipKeyPathsForPrefetching = ["photos"]
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.perform {
                 do {
-                    guard let moviePhotoListEntity = try context.fetch(request).first else { return }
+                    guard let moviePhotoListEntity = try context.fetch(request).first else { return promise(.failure(CoreDataError.dataNotAvailable)) }
 
                     let photos: [Photo] = (moviePhotoListEntity.photos?.allObjects as? [MoviePhotosEntity])?.sorted(by: { $0.index < $1.index} ).map  {
                         photoEntity in
@@ -78,7 +78,7 @@ class MoviePhotosDaoImpl: MoviePhotosDao {
             let request: NSFetchRequest<MoviePhotoListEntity> = MoviePhotoListEntity.fetchRequest()
             request.predicate = NSPredicate(format: "id == %d", movieId)
             request.fetchLimit = 1
-            guard let context = self?.persistentStore.backgroundContext else { return }
+            guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.perform {
                 do {
                     if let moviePhotoListEntity = try context.fetch(request).first {
