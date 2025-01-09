@@ -26,7 +26,10 @@ struct MovieDetailAuthorReviews: View {
                                 Text(String(format: "%.01f", authorReview.authorDetails?.rating ?? 0))
                             }
                             Text("\(authorReview.updatedAt?.prefix(10) ?? "")")
+                                .padding(.top, 2)
                             Text(authorReview.content ?? "")
+                                .padding(.top, 2)
+                                .font(.callout)
                                 .lineLimit(3)
                         }
                         .padding(.leading, 16)
