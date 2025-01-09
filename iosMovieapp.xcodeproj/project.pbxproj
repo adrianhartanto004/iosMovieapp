@@ -464,8 +464,8 @@
 		234664A22CBFE83C00861E4A /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				23913FC32D1F47370088821F /* Detail */,
 				234664A92CBFEA5D00861E4A /* Home */,
+				23913FC32D1F47370088821F /* Detail */,
 				23913FBE2D1F442D0088821F /* Favourite */,
 				232074262CC97C30008D6540 /* NowPlayingMoviesList */,
 			);
