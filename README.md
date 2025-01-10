@@ -1,6 +1,11 @@
 # iosMovieapp
 Steps to run the project: 
 - Create a file Key.swift inside ***iosMovieapp/Data*** folder and add your API key from [TMDB](https://developer.themoviedb.org/)
+```
+struct Key {
+    static let API_KEY = "<Your API KEY>"
+}
+```
 
 <img src="https://github.com/adrianhartanto004/iosMovieapp/blob/dev/demo/iosMovieapp%20key.png">
 
@@ -32,23 +37,23 @@ Steps to run the project:
 
 | HomeView |
 | --- |
-| <img src="https://github.com/adrianhartanto004/iosMovieapp/blob/dev/demo/iosMovieapp%20homeview.png" width="360" height="720"> |
+| <img src="https://github.com/adrianhartanto004/iosMovieapp/blob/dev/demo/iosMovieapp%20homeview.png" style="width:50%; height:auto;"> |
 
 | MovieDetail Loading | MovieDetail loaded |
 | --- | --- |
-| <img src="https://github.com/adrianhartanto004/iosMovieapp/blob/dev/demo/iosMovieapp%20moviedetail%20shimmering%201.png" width="360" height="720"> | <img src="https://github.com/adrianhartanto004/iosMovieapp/blob/dev/demo/iosMovieapp%20moviedetail.png" width="360" height="720"> |
+| <img src="https://github.com/adrianhartanto004/iosMovieapp/blob/dev/demo/iosMovieapp%20moviedetail%20shimmering%201.png"> | <img src="https://github.com/adrianhartanto004/iosMovieapp/blob/dev/demo/iosMovieapp%20moviedetail.png"> |
 
 | MovieDetail Loading (cont.) | MovieDetail loaded (cont.) |
 | --- | --- |
-| <img src="https://github.com/adrianhartanto004/iosMovieapp/blob/dev/demo/iosMovieapp%20cast%20shimmering.png" width="360" height="720"> | <img src="https://github.com/adrianhartanto004/iosMovieapp/blob/dev/demo/iosMovieapp%20moviedetail%20cast.png" width="360" height="720">
+| <img src="https://github.com/adrianhartanto004/iosMovieapp/blob/dev/demo/iosMovieapp%20cast%20shimmering.png"> | <img src="https://github.com/adrianhartanto004/iosMovieapp/blob/dev/demo/iosMovieapp%20moviedetail%20cast.png">
 
 | NowPlayingMovies load more | 
 | --- |
-| <img src="https://github.com/adrianhartanto004/iosMovieapp/blob/dev/demo/iosMovieapp%20nowplaying%20movies.png" width="360" height="720"> |
+| <img src="https://github.com/adrianhartanto004/iosMovieapp/blob/dev/demo/iosMovieapp%20nowplaying%20movies.png" style="width:50%; height:auto;"> |
 
 | FavouriteMovie added | 
 | --- |
-| <img src="https://github.com/adrianhartanto004/iosMovieapp/blob/dev/demo/iosMovieapp%20favouritemovielist.png" width="360" height="720"> |
+| <img src="https://github.com/adrianhartanto004/iosMovieapp/blob/dev/demo/iosMovieapp%20favouritemovielist.png" style="width:50%; height:auto;"> |
 
 ## Videos
 
