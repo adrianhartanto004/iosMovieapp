@@ -35,9 +35,7 @@ class MoviePhotosDaoImpl: MoviePhotosDao {
                         moviePhotoListEntity.addToPhotos(moviePhotosEntity)
                     }
                     
-                    if context.hasChanges == true {
-                        try context.save()
-                    }
+                    try context.saveIfNeeded()
                     promise(.success(()))
                 } catch {
                     promise(.failure(error))
@@ -84,7 +82,7 @@ class MoviePhotosDaoImpl: MoviePhotosDao {
                     if let moviePhotoListEntity = try context.fetch(request).first {
                         context.delete(moviePhotoListEntity)
                     }
-                    try context.save()
+                    try context.saveIfNeeded()
                     promise(.success(()))
                 } catch {
                     promise(.failure(error))

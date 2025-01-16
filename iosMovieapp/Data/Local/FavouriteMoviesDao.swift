@@ -33,9 +33,7 @@ class FavouriteMoviesDaoImpl: FavouriteMoviesDao {
                     favouriteMoviesEntity.releaseDate = movieDetail.releaseDate
                     favouriteMoviesEntity.addedAt = Date()
                     
-                    if context.hasChanges == true {
-                        try context.save()
-                    }
+                    try context.saveIfNeeded()
                     promise(.success(()))
                 } catch {
                     promise(.failure(error))
@@ -106,7 +104,7 @@ class FavouriteMoviesDaoImpl: FavouriteMoviesDao {
                     if let favouriteMoviesEntity = try context.fetch(request).first {
                         context.delete(favouriteMoviesEntity)
                     }
-                    try context.save()
+                    try context.saveIfNeeded()
                     promise(.success(()))
                 } catch {
                     promise(.failure(error))

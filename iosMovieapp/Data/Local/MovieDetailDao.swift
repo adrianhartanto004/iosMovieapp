@@ -63,9 +63,7 @@ class MovieDetailDaoImpl: MovieDetailDao {
                         movieDetailEntity.addToProductionCountries(productionCountryEntity)
                     }
                     
-                    if context.hasChanges == true {
-                        try context.save()
-                    }
+                    try context.saveIfNeeded()
                     promise(.success(()))
                 } catch {
                     promise(.failure(error))
@@ -154,7 +152,7 @@ class MovieDetailDaoImpl: MovieDetailDao {
                     if let movieDetailEntity = try context.fetch(request).first {
                         context.delete(movieDetailEntity)
                     }
-                    try context.save()
+                    try context.saveIfNeeded()
                     promise(.success(()))
                 } catch {
                     promise(.failure(error))

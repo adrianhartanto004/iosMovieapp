@@ -26,9 +26,7 @@ class NowPlayingMoviesDaoImpl: NowPlayingMoviesDao {
                     items.forEach { item in
                         item.store(in: context, addedAt: Date())
                     }
-                    if context.hasChanges == true {
-                        try context.save()
-                    }
+                    try context.saveIfNeeded()
                     promise(.success(()))
                 } catch {
                     promise(.failure(error))
@@ -68,7 +66,7 @@ class NowPlayingMoviesDaoImpl: NowPlayingMoviesDao {
         return Future { [weak self] promise in
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.DBName.nowPlayingMoviesEntity)
             let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: request)
-            batchDeleteRequest.resultType = .resultTypeCount
+            batchDeleteRequest.resultType = .resultTypeStatusOnly
             guard let context = self?.persistentStore.backgroundContext else { return promise(.failure(CoreDataError.contextNotAvailable)) }
             context.perform {
                 do {

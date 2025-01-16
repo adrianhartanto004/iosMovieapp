@@ -22,4 +22,9 @@ extension NSManagedObjectContext {
         mergePolicy = NSOverwriteMergePolicy
         undoManager = nil
     }
+    
+    func saveIfNeeded() throws {
+        guard hasChanges else { return }
+        try save()
+    }
 }

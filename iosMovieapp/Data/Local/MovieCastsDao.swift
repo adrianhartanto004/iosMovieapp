@@ -37,9 +37,7 @@ class MovieCastsDaoImpl: MovieCastsDao {
                         movieCreditListEntity.addToCasts(movieCastsEntity)
                     }
                     
-                    if context.hasChanges == true {
-                        try context.save()
-                    }
+                    try context.saveIfNeeded()
                     promise(.success(()))
                 } catch {
                     promise(.failure(error))
@@ -90,7 +88,7 @@ class MovieCastsDaoImpl: MovieCastsDao {
                     if let movieCreditListEntity = try context.fetch(request).first {
                         context.delete(movieCreditListEntity)
                     }
-                    try context.save()
+                    try context.saveIfNeeded()
                     promise(.success(()))
                 } catch {
                     promise(.failure(error))

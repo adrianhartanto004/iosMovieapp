@@ -40,9 +40,7 @@ class MovieAuthorReviewsDaoImpl: MovieAuthorReviewsDao {
                         movieAuthorReviewListEntity.addToAuthorReviews(movieAuthorReviewsEntity)
                     }
                     
-                    if context.hasChanges == true {
-                        try context.save()
-                    }
+                    try context.saveIfNeeded()
                     promise(.success(()))
                 } catch {
                     promise(.failure(error))
@@ -94,7 +92,7 @@ class MovieAuthorReviewsDaoImpl: MovieAuthorReviewsDao {
                     if let movieAuthorReviewListEntity = try context.fetch(request).first {
                         context.delete(movieAuthorReviewListEntity)
                     }
-                    try context.save()
+                    try context.saveIfNeeded()
                     promise(.success(()))
                 } catch {
                     promise(.failure(error))
