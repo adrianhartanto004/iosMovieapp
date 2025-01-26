@@ -24,10 +24,24 @@ struct MovieDetailContentView: View {
                     Text(String(format: "%.01f", viewModel.movieDetail?.voteAverage ?? 0))
                     Text("( \(viewModel.movieDetail?.voteCount ?? 0) )")
                 }
-                .padding(.bottom, 8)
-                Text((viewModel.movieDetail?.genres?.map{ genre in
-                    genre.name
-                }.joined(separator: ", ")) ?? "")
+                .padding(.bottom, 8)                
+                FlexibleView(
+                  data: viewModel.movieDetail?.genres ?? [],
+                  spacing: 0,
+                  alignment: .leading
+                ) { genre in
+                    Text(genre.name)
+                        .foregroundColor(Color.white)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .background(Color.gray)
+                        .cornerRadius(24)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.center)
+                        .padding(.trailing, 8)
+                        .padding(.bottom, 8)
+                }
             }
             .padding(.leading, 8)
         }
