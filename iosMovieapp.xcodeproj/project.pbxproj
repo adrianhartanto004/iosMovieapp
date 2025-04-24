@@ -1778,7 +1778,7 @@
 			);
 			currentVersion = 234664D32CBFEEE800861E4A /* db_model.xcdatamodel */;
 			name = db_model.xcdatamodeld;
-			path = /Users/adrianhartanto/Documents/GitHub/iosMovieapp/iosMovieapp/Persistence/db_model.xcdatamodeld;
+			path = db_model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
